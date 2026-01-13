@@ -1,0 +1,13 @@
+{
+  "website_url": "https://ediu95yruta0.space.minimax.io",
+  "tests_passed": 7,
+  "tests_failed": 5,
+  "issues": [
+    "Enhancement progress indicator not displayed",
+    "PEM enhancement not generated correctly",
+    "Copy button disabled after enhancement",
+    "Save button disabled after enhancement",
+    "Organize modal not displayed"
+  ],
+  "enhancement_layers_tested": 0
+}
