@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebLLM - Nihiltheism AI Chat</title>
+    <script src="https://unpkg.com/@mlc-ai/web-llm/dist/web-llm.js"></script>
+    <style>
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #000;
+            color: #fff;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .container { 
+            max-width: 800px; 
+            width: 100%;
+            background: #111;
+            border: 1px solid #333;
+            border-radius: 10px;
+            padding: 20px;
+        }
+        #chatContainer {
+            height: 400px;
+            overflow-y: auto;
+            border-bottom: 1px solid #333;
+            margin-bottom: 20px;
+            padding: 10px;
+        }
+        .message { margin-bottom: 15px; line-height: 1.5; }
+        .user { color: #4facfe; }
+        .ai { color: #888; }
+        input {
+            width: 80%;
+            padding: 10px;
+            background: #222;
+            border: 1px solid #444;
+            color: #fff;
+            border-radius: 5px;
+        }
+        button {
+            padding: 10px 20px;
+            background: #444;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+        button:disabled { opacity: 0.5; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Nihiltheism WebLLM</h1>
+        <div id="status">Loading...</div>
+        <div id="chatContainer"></div>
+        <input type="text" id="messageInput" placeholder="Enter the void..." disabled>
+        <button id="sendBtn" disabled>Send</button>
+        <button id="downloadBtn">Download Model (2.2GB)</button>
+    </div>
+
+    <script>
+        let engine;
+        const statusEl = document.getElementById('status');
+        const chatContainer = document.getElementById('chatContainer');
+        const messageInput = document.getElementById('messageInput');
+        const sendBtn = document.getElementById('sendBtn');
+        const downloadBtn = document.getElementById('downloadBtn');
+
+        async function init() {
+            downloadBtn.onclick = async () => {
+                statusEl.textContent = "Downloading model... please wait.";
+                downloadBtn.disabled = true;
+                engine = new window.webllm.MLCEngine();
+                await engine.reload('Phi-4-mini-instruct-q4f16_1-MLC');
+                statusEl.textContent = "Model Ready.";
+                messageInput.disabled = false;
+                sendBtn.disabled = false;
+            };
+
+            sendBtn.onclick = async () => {
+                const text = messageInput.value;
+                messageInput.value = "";
+                chatContainer.innerHTML += `<div class="message user"><b>You:</b> ${text}</div>`;
+                const reply = await engine.chat.completions.create({ messages: [{role: "user", content: text}] });
+                chatContainer.innerHTML += `<div class="message ai"><b>AI:</b> ${reply.choices[0].message.content}</div>`;
+            };
+        }
+        init();
+    </script>
+</body>
+</html>
