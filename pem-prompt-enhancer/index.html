@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PEM-Based Prompt Enhancement Tool</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>PEM-Based Prompt Enhancement Tool</h1>
+            <p class="subtitle">Comprehensive Prompt Engineering Methodology for Optimized Prompts</p>
+        </header>
+
+        <main>
+            <!-- Input Section -->
+            <div class="input-section">
+                <label for="userInput" class="section-label">Your Original Prompt</label>
+                <textarea 
+                    id="userInput" 
+                    placeholder="Enter your prompt here... (No modifications will be made to your original input)"
+                    rows="6"
+                ></textarea>
+                <button id="enhanceBtn" class="primary-btn">Prompt Enhance</button>
+            </div>
+
+            <!-- Output Section -->
+            <div class="output-section">
+                <div class="output-header">
+                    <label for="output" class="section-label">Enhanced Prompt Result</label>
+                    <div class="enhancement-info">
+                        <span id="enhancementCount">Enhancement Layers Applied: 0/5</span>
+                    </div>
+                </div>
+                <textarea 
+                    id="output" 
+                    readonly
+                    placeholder="Your enhanced prompt will appear here after applying PEM methodology..."
+                    rows="12"
+                ></textarea>
+            </div>
+
+            <!-- Action Buttons Row -->
+            <div class="action-buttons-row">
+                <button id="furtherEnhanceBtn" class="action-btn" disabled>Further Enhanced</button>
+                <button id="saveBtn" class="action-btn" disabled>Save</button>
+                <button id="copyBtn" class="action-btn" disabled>Copy</button>
+                <button id="deleteBtn" class="action-btn" disabled>Delete</button>
+                <button id="organizeBtn" class="action-btn" disabled>Organize</button>
+            </div>
+        </main>
+
+        <!-- Enhancement Progress -->
+        <div class="enhancement-progress" id="enhancementProgress" style="display: none;">
+            <div class="progress-item" data-layer="1">
+                <div class="progress-icon">🔍</div>
+                <span>Layer 1: Prompt Analysis Protocol</span>
+                <div class="progress-status">Ready</div>
+            </div>
+            <div class="progress-item" data-layer="2">
+                <div class="progress-icon">🏗️</div>
+                <span>Layer 2: Architecture Design</span>
+                <div class="progress-status">Ready</div>
+            </div>
+            <div class="progress-item" data-layer="3">
+                <div class="progress-icon">⚡</div>
+                <span>Layer 3: Iterative Refinement</span>
+                <div class="progress-status">Ready</div>
+            </div>
+            <div class="progress-item" data-layer="4">
+                <div class="progress-icon">📋</div>
+                <span>Layer 4: Output Optimization</span>
+                <div class="progress-status">Ready</div>
+            </div>
+            <div class="progress-item" data-layer="5">
+                <div class="progress-icon">🧠</div>
+                <span>Layer 5: Consciousness Engineering</span>
+                <div class="progress-status">Ready</div>
+            </div>
+        </div>
+
+        <footer>
+            <p class="info-text">Apply comprehensive PEM methodology to transform your prompts through 5 enhancement layers</p>
+        </footer>
+    </div>
+
+    <!-- Organization Modal -->
+    <div id="organizeModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Organize Saved Prompts</h2>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div id="savedPromptsList" class="saved-prompts-list">
+                    <!-- Saved prompts will be loaded here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Text-to-Response Structure Processor</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Text-to-Response Structure Processor</h1>
+            <p class="subtitle">Append the Response Structure template to your text</p>
+        </header>
+
+        <main>
+            <div class="input-section">
+                <label for="userInput" class="section-label">Your Original Text</label>
+                <textarea 
+                    id="userInput" 
+                    placeholder="Enter your text here... (No modifications will be made)"
+                    rows="8"
+                ></textarea>
+                <button id="generateBtn" class="primary-btn">Generate Response Structure</button>
+            </div>
+
+            <div class="output-section">
+                <div class="output-header">
+                    <label for="output" class="section-label">Combined Result</label>
+                    <button id="copyBtn" class="secondary-btn" disabled>Copy to Clipboard</button>
+                </div>
+                <textarea 
+                    id="output" 
+                    readonly
+                    placeholder="Your combined text will appear here..."
+                    rows="12"
+                ></textarea>
+            </div>
+        </main>
+
+        <footer>
+            <p class="info-text">Enter any text and generate a structured response template. Your original text remains unchanged.</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

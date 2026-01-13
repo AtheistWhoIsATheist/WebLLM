@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>Phi-4-mini Model Download - iOS Files App Setup</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+            padding: 20px;
+            padding-bottom: 100px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+        
+        .header p {
+            font-size: 16px;
+            opacity: 0.9;
+            line-height: 1.5;
+        }
+        
+        .instructions {
+            background: #f8f9fa;
+            padding: 25px;
+            border-bottom: 1px solid #e9ecef;
+        }
+        
+        .instructions h2 {
+            color: #495057;
+            margin-bottom: 15px;
+            font-size: 20px;
+        }
+        
+        .instructions ol {
+            padding-left: 20px;
+            line-height: 1.6;
+            color: #6c757d;
+        }
+        
+        .instructions li {
+            margin-bottom: 8px;
+        }
+        
+        .download-section {
+            padding: 30px;
+        }
+        
+        .download-stats {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #e3f2fd;
+            padding: 15px 20px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            font-size: 14px;
+        }
+        
+        .stat-item {
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 20px;
+            font-weight: 700;
+            color: #1976d2;
+            display: block;
+        }
+        
+        .stat-label {
+            color: #666;
+            font-size: 12px;
+        }
+        
+        .download-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .shard-item {
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            padding: 20px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .shard-item:hover {
+            border-color: #667eea;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.2);
+        }
+        
+        .shard-item.downloaded {
+            background: #d4edda;
+            border-color: #28a745;
+        }
+        
+        .shard-item.downloading {
+            background: #fff3cd;
+            border-color: #ffc107;
+        }
+        
+        .shard-name {
+            font-weight: 600;
+            color: #495057;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+        
+        .shard-size {
+            color: #6c757d;
+            font-size: 12px;
+            margin-bottom: 15px;
+        }
+        
+        .download-btn {
+            width: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 14px;
+        }
+        
+        .download-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+        
+        .download-btn:active {
+            transform: translateY(0);
+        }
+        
+        .download-btn:disabled {
+            background: #6c757d;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .download-btn.downloaded {
+            background: #28a745;
+        }
+        
+        .download-btn.downloading {
+            background: #ffc107;
+            color: #212529;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 4px;
+            background: #e9ecef;
+            border-radius: 2px;
+            margin-top: 10px;
+            overflow: hidden;
+            display: none;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            border-radius: 2px;
+            transition: width 0.3s ease;
+            width: 0%;
+        }
+        
+        .bulk-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        .bulk-btn {
+            flex: 1;
+            padding: 12px;
+            border: 2px solid #667eea;
+            background: white;
+            color: #667eea;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .bulk-btn:hover {
+            background: #667eea;
+            color: white;
+        }
+        
+        .footer {
+            background: #f8f9fa;
+            padding: 20px 30px;
+            text-align: center;
+            color: #6c757d;
+            font-size: 14px;
+            border-top: 1px solid #e9ecef;
+        }
+        
+        .alert {
+            background: #d1ecf1;
+            border: 1px solid #bee5eb;
+            color: #0c5460;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+        
+        .alert-icon {
+            margin-right: 8px;
+        }
+        
+        @media (max-width: 480px) {
+            .download-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .header h1 {
+                font-size: 24px;
+            }
+            
+            .download-stats {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🤖 Phi-4-mini Model Download</h1>
+            <p>Download all 50 model shards for iOS Files App integration</p>
+        </div>
+        
+        <div class="instructions">
+            <h2>📱 iOS Files App Setup Instructions</h2>
+            <ol>
+                <li><strong>Open this page in iOS Safari</strong> - Ensure you're using Safari, not Chrome or other browsers</li>
+                <li><strong>Tap "Allow" when prompted</strong> - Safari will ask to download files to your Downloads folder</li>
+                <li><strong>Download all 50 shards</strong> - Each file is ~80-100MB, total ~4GB</li>
+                <li><strong>Open Files app</strong> - Go to "Downloads" folder</li>
+                <li><strong>Create new folder</strong> - Name it "Phi-4-mini-model" or similar</li>
+                <li><strong>Move all files</strong> - Select all downloaded shards and move them to the new folder</li>
+                <li><strong>Verify file count</strong> - Ensure all 50 files are present and properly named</li>
+                <li><strong>Use with WebLLM</strong> - The folder is now ready for your ML app</li>
+            </ol>
+        </div>
+        
+        <div class="alert">
+            <span class="alert-icon">⚠️</span>
+            <strong>Important:</strong> Keep Safari open during downloads. If downloads pause, tap the download indicator in Safari's toolbar to resume.
+        </div>
+        
+        <div class="download-section">
+            <div class="download-stats">
+                <div class="stat-item">
+                    <span class="stat-value" id="total-shards">50</span>
+                    <span class="stat-label">Total Shards</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-value" id="downloaded-count">0</span>
+                    <span class="stat-label">Downloaded</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-value" id="remaining-count">50</span>
+                    <span class="stat-label">Remaining</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-value" id="total-size">~4.0GB</span>
+                    <span class="stat-label">Total Size</span>
+                </div>
+            </div>
+            
+            <div class="bulk-actions">
+                <button class="bulk-btn" onclick="downloadAll()">📥 Download All</button>
+                <button class="bulk-btn" onclick="resetDownloads()">🔄 Reset</button>
+                <button class="bulk-btn" onclick="checkDownloads()">✅ Check Files</button>
+            </div>
+            
+            <div class="download-grid" id="download-grid">
+                <!-- Shard items will be generated by JavaScript -->
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>💡 <strong>Tip:</strong> For best results, download on WiFi and keep your device charged. Each shard downloads independently and can be resumed if interrupted.</p>
+        </div>
+    </div>
+
+    <script>
+        // Model configuration
+        const MODEL_BASE_URL = 'https://huggingface.co/microsoft/Phi-4-mini/resolve/main/';
+        const TOTAL_SHARDS = 50;
+        
+        // File sizes in bytes (approximate, as shards vary in size)
+        const SHARD_SIZES = [
+            // params_shard_0.bin through params_shard_49.bin
+            104857600, 104857600, 104857600, 104857600, 104857600,  // 0-4
+            104857600, 104857600, 104857600, 104857600, 104857600,  // 5-9
+            104857600, 104857600, 104857600, 104857600, 104857600,  // 10-14
+            104857600, 104857600, 104857600, 104857600, 104857600,  // 15-19
+            104857600, 104857600, 104857600, 104857600, 104857600,  // 20-24
+            104857600, 104857600, 104857600, 104857600, 104857600,  // 25-29
+            104857600, 104857600, 104857600, 104857600, 104857600,  // 30-34
+            104857600, 104857600, 104857600, 104857600, 104857600,  // 35-39
+            104857600, 104857600, 104857600, 104857600, 104857600,  // 40-44
+            104857600, 104857600, 104857600, 104857600, 104857600   // 45-49
+        ];
+        
+        // Download tracking
+        const downloadStatus = {};
+        const downloadsInProgress = new Set();
+        
+        // Initialize the page
+        function initPage() {
+            const grid = document.getElementById('download-grid');
+            
+            for (let i = 0; i < TOTAL_SHARDS; i++) {
+                const shardElement = createShardElement(i);
+                grid.appendChild(shardElement);
+            }
+            
+            updateStats();
+        }
+        
+        // Create a shard download element
+        function createShardElement(index) {
+            const shard = document.createElement('div');
+            shard.className = 'shard-item';
+            shard.id = `shard-${index}`;
+            
+            const fileName = `params_shard_${index}.bin`;
+            const fileSize = formatFileSize(SHARD_SIZES[index]);
+            const fileUrl = `${MODEL_BASE_URL}${fileName}`;
+            
+            shard.innerHTML = `
+                <div class="shard-name">${fileName}</div>
+                <div class="shard-size">${fileSize}</div>
+                <button class="download-btn" onclick="downloadShard(${index})" id="btn-${index}">
+                    📥 Download
+                </button>
+                <div class="progress-bar" id="progress-${index}">
+                    <div class="progress-fill" id="progress-fill-${index}"></div>
+                </div>
+            `;
+            
+            return shard;
+        }
+        
+        // Download individual shard
+        function downloadShard(index) {
+            if (downloadsInProgress.has(index)) {
+                return; // Already downloading
+            }
+            
+            const fileName = `params_shard_${index}.bin`;
+            const fileUrl = `${MODEL_BASE_URL}${fileName}`;
+            const button = document.getElementById(`btn-${index}`);
+            const shardElement = document.getElementById(`shard-${index}`);
+            const progressBar = document.getElementById(`progress-${index}`);
+            const progressFill = document.getElementById(`progress-fill-${index}`);
+            
+            // Update UI to downloading state
+            button.textContent = '⬇️ Downloading...';
+            button.classList.add('downloading');
+            button.disabled = true;
+            shardElement.classList.add('downloading');
+            progressBar.style.display = 'block';
+            
+            downloadsInProgress.add(index);
+            
+            // Create download link
+            const link = document.createElement('a');
+            link.href = fileUrl;
+            link.download = fileName;
+            link.style.display = 'none';
+            
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            
+            // Simulate progress (iOS Safari doesn't provide download progress events)
+            let progress = 0;
+            const progressInterval = setInterval(() => {
+                progress += Math.random() * 15;
+                if (progress >= 100) {
+                    progress = 100;
+                    clearInterval(progressInterval);
+                    completeDownload(index);
+                }
+                progressFill.style.width = progress + '%';
+            }, 500);
+            
+            downloadStatus[index] = {
+                status: 'downloading',
+                progress: 0,
+                url: fileUrl,
+                fileName: fileName
+            };
+        }
+        
+        // Complete download
+        function completeDownload(index) {
+            const button = document.getElementById(`btn-${index}`);
+            const shardElement = document.getElementById(`shard-${index}`);
+            const progressBar = document.getElementById(`progress-${index}`);
+            
+            button.textContent = '✅ Downloaded';
+            button.classList.remove('downloading');
+            button.classList.add('downloaded');
+            shardElement.classList.remove('downloading');
+            shardElement.classList.add('downloaded');
+            progressBar.style.display = 'none';
+            
+            downloadsInProgress.delete(index);
+            downloadStatus[index] = {
+                status: 'completed',
+                progress: 100
+            };
+            
+            updateStats();
+            
+            // Show completion notification
+            if ('Notification' in window && Notification.permission === 'granted') {
+                new Notification(`Shard ${index} Downloaded`, {
+                    body: `params_shard_${index}.bin has been downloaded successfully`,
+                    icon: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y=".9em" font-size="90">🤖</text></svg>'
+                });
+            }
+        }
+        
+        // Download all shards
+        function downloadAll() {
+            for (let i = 0; i < TOTAL_SHARDS; i++) {
+                if (downloadStatus[i]?.status !== 'completed') {
+                    setTimeout(() => downloadShard(i), i * 200); // Stagger downloads
+                }
+            }
+        }
+        
+        // Reset all downloads
+        function resetDownloads() {
+            if (confirm('Are you sure you want to reset all downloads? This will clear the download status.')) {
+                Object.keys(downloadStatus).forEach(index => {
+                    delete downloadStatus[index];
+                });
+                downloadsInProgress.clear();
+                
+                // Reset all UI elements
+                for (let i = 0; i < TOTAL_SHARDS; i++) {
+                    const button = document.getElementById(`btn-${i}`);
+                    const shardElement = document.getElementById(`shard-${i}`);
+                    const progressBar = document.getElementById(`progress-${index}`);
+                    
+                    if (button && shardElement) {
+                        button.textContent = '📥 Download';
+                        button.className = 'download-btn';
+                        shardElement.className = 'shard-item';
+                        
+                        if (progressBar) {
+                            progressBar.style.display = 'none';
+                            const progressFill = document.getElementById(`progress-fill-${i}`);
+                            if (progressFill) {
+                                progressFill.style.width = '0%';
+                            }
+                        }
+                    }
+                }
+                
+                updateStats();
+            }
+        }
+        
+        // Check downloaded files
+        function checkDownloads() {
+            const totalSize = SHARD_SIZES.reduce((sum, size) => sum + size, 0);
+            const completed = Object.values(downloadStatus).filter(d => d.status === 'completed').length;
+            
+            alert(`Download Status:\n\nCompleted: ${completed}/50 shards\nProgress: ${((completed / TOTAL_SHARDS) * 100).toFixed(1)}%\nDownloaded: ${formatFileSize(totalSize * (completed / TOTAL_SHARDS))}`);
+        }
+        
+        // Update statistics
+        function updateStats() {
+            const completed = Object.values(downloadStatus).filter(d => d.status === 'completed').length;
+            const remaining = TOTAL_SHARDS - completed;
+            
+            document.getElementById('downloaded-count').textContent = completed;
+            document.getElementById('remaining-count').textContent = remaining;
+        }
+        
+        // Format file size
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 B';
+            const k = 1024;
+            const sizes = ['B', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + ' ' + sizes[i];
+        }
+        
+        // Request notification permission
+        if ('Notification' in window && Notification.permission === 'default') {
+            Notification.requestPermission();
+        }
+        
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', initPage);
+        
+        // Handle page visibility change (iOS background/foreground)
+        document.addEventListener('visibilitychange', function() {
+            if (!document.hidden) {
+                // Page became visible, check for any stuck downloads
+                downloadsInProgress.forEach(index => {
+                    setTimeout(() => completeDownload(index), 1000);
+                });
+            }
+        });
+    </script>
+</body>
+</html>

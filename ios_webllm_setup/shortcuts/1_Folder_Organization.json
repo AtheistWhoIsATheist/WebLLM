@@ -1,0 +1,130 @@
+{
+  "workflow": {
+    "workflowFileVersion": "1.0",
+    "workflowName": "WebLLM iOS Folder Setup",
+    "workflowDisplayName": "📁 WebLLM Folder Setup",
+    "workflowDescription": "Automatically creates the correct folder structure for WebLLM iOS setup in Files app",
+    "workflowUUID": "webllm-folder-setup-001",
+    "lastModifiedDate": "2025-11-07T00:14:03Z",
+    "creationDate": "2025-11-07T00:14:03Z",
+    "actions": [
+      {
+        "actionUUID": "create-main-folder",
+        "actionName": "Create Folder",
+        "actionType": "WFCreateFolderAction",
+        "parameters": {
+          "FolderName": "WebLLM_iOS_App",
+          "GroupPath": "iCloud Drive"
+        }
+      },
+      {
+        "actionUUID": "create-subfolders",
+        "actionName": "Ask for Input",
+        "actionType": "WFAskForInputAction",
+        "parameters": {
+          "InputQuestion": "Do you want to create the complete WebLLM folder structure? This will create:\n• Main app folder (WebLLM_iOS_App)\n• Models folder for AI storage\n• Downloads folder for temporary files\n• Temp folder for cache files",
+          "InputType": "Multiple Choice",
+          "MultipleChoice": [
+            "Yes, create full structure",
+            "Skip subfolders for now",
+            "Only create models folder"
+          ]
+        }
+      },
+      {
+        "actionUUID": "conditional-create-folders",
+        "actionName": "If",
+        "actionType": "WFIfAction",
+        "parameters": {},
+        "subactions": [
+          {
+            "actionUUID": "create-models-folder",
+            "actionName": "Create Folder",
+            "actionType": "WFCreateFolderAction",
+            "parameters": {
+              "FolderName": "models",
+              "GroupPath": "iCloud Drive/WebLLM_iOS_App"
+            }
+          },
+          {
+            "actionUUID": "create-model-subfolder",
+            "actionName": "Create Folder",
+            "actionType": "WFCreateFolderAction",
+            "parameters": {
+              "FolderName": "Phi-4-mini-instruct-q4f16_1-MLC",
+              "GroupPath": "iCloud Drive/WebLLM_iOS_App/models"
+            }
+          }
+        ],
+        "subactionParameters": {
+          "condition": {
+            "input": "Yes, create full structure"
+          }
+        }
+      },
+      {
+        "actionUUID": "downloads-folder",
+        "actionName": "If",
+        "actionType": "WFIfAction",
+        "parameters": {},
+        "subactions": [
+          {
+            "actionUUID": "create-downloads-folder",
+            "actionName": "Create Folder",
+            "actionType": "WFCreateFolderAction",
+            "parameters": {
+              "FolderName": "downloads",
+              "GroupPath": "iCloud Drive/WebLLM_iOS_App"
+            }
+          }
+        ],
+        "subactionParameters": {
+          "condition": {
+            "input": "Yes, create full structure"
+          }
+        }
+      },
+      {
+        "actionUUID": "temp-folder",
+        "actionName": "If",
+        "actionType": "WFIfAction",
+        "parameters": {},
+        "subactions": [
+          {
+            "actionUUID": "create-temp-folder",
+            "actionName": "Create Folder",
+            "actionType": "WFCreateFolderAction",
+            "parameters": {
+              "FolderName": "temp",
+              "GroupPath": "iCloud Drive/WebLLM_iOS_App"
+            }
+          }
+        ],
+        "subactionParameters": {
+          "condition": {
+            "input": "Yes, create full structure"
+          }
+        }
+      },
+      {
+        "actionUUID": "show-folder-structure",
+        "actionName": "Show Notification",
+        "actionType": "WFShowNotificationAction",
+        "parameters": {
+          "NotificationText": "✅ WebLLM folder structure created!\n\n📁 iCloud Drive/WebLLM_iOS_App/\n├── index.html (add to Home Screen)\n├── models/\n│   └── Phi-4-mini-instruct-q4f16_1-MLC/\n├── downloads/\n└── temp/\n\nNext: Download WebLLM files and add to Home Screen!",
+          "NotificationTitle": "Folder Setup Complete"
+        }
+      },
+      {
+        "actionUUID": "open-files-app",
+        "actionName": "Open App",
+        "actionType": "WFOpenInAppAction",
+        "parameters": {
+          "App": "com.apple.FileProvider"
+        }
+      }
+    ],
+    "startNode": "create-main-folder",
+    "entryPointType": "Start On Tap"
+  }
+}

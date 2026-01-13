@@ -1,0 +1,178 @@
+{
+  "workflow": {
+    "workflowFileVersion": "1.0",
+    "workflowName": "WebLLM GitHub Deploy",
+    "workflowDisplayName": "🚀 WebLLM GitHub Deploy",
+    "workflowDescription": "Deploys WebLLM to GitHub Pages using one of three methods: GitHub Mobile, iSH Shell, or Safari-only",
+    "workflowUUID": "webllm-github-deploy-003",
+    "lastModifiedDate": "2025-11-07T00:14:03Z",
+    "creationDate": "2025-11-07T00:14:03Z",
+    "actions": [
+      {
+        "actionUUID": "deploy-method-chooser",
+        "actionName": "Ask for Input",
+        "actionType": "WFAskForInputAction",
+        "parameters": {
+          "InputQuestion": "Choose your GitHub deployment method:\n\n1. **GitHub Mobile** - Easiest (recommended for beginners)\n2. **iSH Shell** - Advanced (full Git control)\n3. **Safari Only** - No additional apps needed\n\nWhich method would you like to use?",
+          "InputType": "Multiple Choice",
+          "MultipleChoice": [
+            "GitHub Mobile (Easiest)",
+            "iSH Shell (Advanced)",
+            "Safari Only (No Apps)"
+          ]
+        }
+      },
+      {
+        "actionUUID": "github-mobile-method",
+        "actionName": "If",
+        "actionType": "WFIfAction",
+        "parameters": {},
+        "subactions": [
+          {
+            "actionUUID": "github-mobile-info",
+            "actionName": "Show Notification",
+            "actionType": "WFShowNotificationAction",
+            "parameters": {
+              "NotificationText": "📱 GitHub Mobile Method Selected\n\nThis is the easiest way to deploy!\n\n1. Install GitHub Mobile app\n2. Create new repository:\n   - Name: webllm-app\n   - Public repository\n   - Add README\n\n3. Go to Settings → Pages\n4. Deploy from main branch\n\n5. Add files:\n   - index.html (your WebLLM app)\n   - .nojekyll (empty file)\n\n6. Wait 5-10 minutes for deployment",
+              "NotificationTitle": "GitHub Mobile Method"
+            }
+          },
+          {
+            "actionUUID": "create-github-files",
+            "actionName": "Create File",
+            "actionType": "WFCreateFileAction",
+            "parameters": {
+              "FileName": "index.html",
+              "FileContent": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>WebLLM - In-Browser AI</title>\n    <script src=\"https://unpkg.com/@mlc-ai/web-llm/dist/web-llm.js\"></script>\n    <style>\n        body { font-family: -apple-system, BlinkMacSystemFont, sans-serif; margin: 20px; background: #f2f2f2; }\n        #chat-container { max-width: 800px; margin: 0 auto; background: white; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); padding: 20px; }\n        #messages { height: 400px; overflow-y: scroll; border: 1px solid #e0e0e0; padding: 15px; border-radius: 8px; margin: 15px 0; }\n        #input { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 16px; box-sizing: border-box; }\n        button { padding: 12px 24px; background: #007AFF; color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 16px; width: 100%; margin-top: 10px; }\n        button:hover { background: #0056b3; }\n        .message { margin: 10px 0; padding: 10px; border-radius: 8px; }\n        .user { background: #e3f2fd; text-align: right; }\n        .ai { background: #f5f5f5; }\n        h1 { color: #333; text-align: center; }\n        .status { text-align: center; color: #666; font-style: italic; }\n    </style>\n</head>\n<body>\n    <div id=\"chat-container\">\n        <h1>🤖 WebLLM - In-Browser AI</h1>\n        <div id=\"status\" class=\"status\">Initializing model...</div>\n        <div id=\"messages\"></div>\n        <input type=\"text\" id=\"input\" placeholder=\"Type your message...\" />\n        <button id=\"sendBtn\" onclick=\"sendMessage()\" disabled>Send Message</button>\n    </div>\n\n    <script>\n        let engine;\n        let isReady = false;\n        \n        async function initWebLLM() {\n            try {\n                engine = new window.webllm.MLCEngine();\n                document.getElementById('status').textContent = 'Loading model...';\n                await engine.reload('Phi-3-mini-4k-instruct-q4f16_1-MLC');\n                isReady = true;\n                document.getElementById('status').textContent = 'Ready! ✅';\n                document.getElementById('sendBtn').disabled = false;\n                document.getElementById('sendBtn').textContent = 'Send Message';\n            } catch (error) {\n                document.getElementById('status').textContent = 'Error: ' + error.message;\n                console.error('WebLLM Error:', error);\n            }\n        }\n        \n        async function sendMessage() {\n            if (!isReady) return;\n            \n            const input = document.getElementById('input');\n            const message = input.value.trim();\n            if (!message) return;\n            \n            input.value = '';\n            document.getElementById('sendBtn').disabled = true;\n            document.getElementById('sendBtn').textContent = 'Thinking...';\n            \n            // Add user message\n            const messages = document.getElementById('messages');\n            messages.innerHTML += `<div class=\"message user\"><strong>You:</strong> ${message}</div>`;\n            messages.scrollTop = messages.scrollHeight;\n            \n            document.getElementById('status').textContent = 'AI is thinking...';\n            \n            try {\n                // Get AI response\n                const completion = await engine.chat.completions.create({\n                    messages: [{ role: 'user', content: message }]\n                });\n                \n                // Add AI response\n                const aiMessage = completion.choices[0].message.content;\n                messages.innerHTML += `<div class=\"message ai\"><strong>AI:</strong> ${aiMessage}</div>`;\n                messages.scrollTop = messages.scrollHeight;\n                document.getElementById('status').textContent = 'Ready! ✅';\n            } catch (error) {\n                messages.innerHTML += `<div class=\"message ai\"><strong>Error:</strong> ${error.message}</div>`;\n                document.getElementById('status').textContent = 'Error occurred';\n            }\n            \n            document.getElementById('sendBtn').disabled = false;\n            document.getElementById('sendBtn').textContent = 'Send Message';\n        }\n        \n        // Handle Enter key\n        document.getElementById('input').addEventListener('keypress', function(e) {\n            if (e.key === 'Enter' && !e.shiftKey) {\n                e.preventDefault();\n                sendMessage();\n            }\n        });\n        \n        // Initialize when page loads\n        initWebLLM();\n    </script>\n</body>\n</html>",
+              "Location": "iCloud Drive/WebLLM_iOS_App"
+            }
+          },
+          {
+            "actionUUID": "create-nojekyll",
+            "actionName": "Create File",
+            "actionType": "WFCreateFileAction",
+            "parameters": {
+              "FileName": ".nojekyll",
+              "FileContent": "",
+              "Location": "iCloud Drive/WebLLM_iOS_App"
+            }
+          },
+          {
+            "actionUUID": "create-readme",
+            "actionName": "Create File",
+            "actionType": "WFCreateFileAction",
+            "parameters": {
+              "FileName": "README.md",
+              "FileContent": "# WebLLM - In-Browser AI\n\n🤖 **Complete offline AI chat powered by WebLLM**\n\nThis is a **100% offline** large language model that runs directly in your browser. No server, no API keys, no subscriptions required.\n\n## Features\n\n- ✅ **Offline Operation** - Works without internet after download\n- ✅ **Private & Secure** - All processing happens locally\n- ✅ **No API Keys** - No external services needed\n- ✅ **iOS Optimized** - Designed for iPhone and iPad\n- ✅ **Free Forever** - No ongoing costs or subscriptions\n\n## Quick Start\n\n1. **First Visit**: Wait for model to load (2.2GB download)\n2. **Start Chatting**: Type your message and press Send\n3. **Works Offline**: No internet required after initial setup\n\n## Supported Models\n\n- Phi-3-mini-4k-instruct (default)\n- Phi-4-mini-instruct (when downloaded)\n- Qwen2-0.5B (smaller, faster)\n\n## Browser Support\n\n- ✅ Safari (iOS/iPadOS)\n- ✅ Chrome (desktop/mobile)\n- ✅ Firefox\n- ✅ Edge\n\n---\n\n*Powered by WebLLM from MLC AI*",
+              "Location": "iCloud Drive/WebLLM_iOS_App"
+            }
+          },
+          {
+            "actionUUID": "open-github-mobile",
+            "actionName": "Open App",
+            "actionType": "WFOpenInAppAction",
+            "parameters": {
+              "App": "com.github.mobile"
+            }
+          }
+        ],
+        "subactionParameters": {
+          "condition": {
+            "input": "GitHub Mobile (Easiest)"
+          }
+        }
+      },
+      {
+        "actionUUID": "ish-shell-method",
+        "actionName": "If",
+        "actionType": "WFIfAction",
+        "parameters": {},
+        "subactions": [
+          {
+            "actionUUID": "ish-info",
+            "actionName": "Show Notification",
+            "actionType": "WFShowNotificationAction",
+            "parameters": {
+              "NotificationText": "🔧 iSH Shell Method Selected\n\n⚠️ This method requires iSH Shell app\n\nSetup:\n1. Install iSH via TestFlight\n2. In iSH, install Git:\n   apk update\n   apk add git nodejs npm\n\n3. Clone your repository:\n   git clone https://github.com/yourusername/webllm-app.git\n   cd webllm-app\n\n4. Create WebLLM project structure\n5. Deploy with Git commands",
+              "NotificationTitle": "iSH Shell Method"
+            }
+          },
+          {
+            "actionUUID": "create-ish-script",
+            "actionName": "Create File",
+            "actionType": "WFCreateFileAction",
+            "parameters": {
+              "FileName": "deploy-ios.sh",
+              "FileContent": "#!/bin/bash\n# iSH Shell GitHub Deploy Script for WebLLM\n\necho \"🚀 WebLLM iOS GitHub Deploy\"\necho \"This script deploys WebLLM to GitHub Pages\"\n\n# Check if git is installed\nif ! command -v git &> /dev/null; then\n    echo \"Installing Git...\"\n    apk update\n    apk add git nodejs npm\nfi\n\n# Set git config\ngit config --global user.name \"Your Name\"\ngit config --global user.email \"your.email@example.com\"\n\n# Clone or create repository\necho \"Setting up repository...\"\nif [ -d \"webllm-app\" ]; then\n    cd webllm-app\nelse\n    git clone https://github.com/yourusername/webllm-app.git\n    cd webllm-app\nfi\n\n# Create WebLLM files\necho \"Creating WebLLM files...\"\n\n# Create index.html\ncat > index.html << 'EOF'\n[HTML content here - same as above]\nEOF\n\n# Create .nojekyll\ntouch .nojekyll\n\n# Git operations\necho \"Deploying to GitHub...\"\ngit add .\ngit commit -m \"Initial WebLLM deployment\"\ngit push origin main\n\necho \"✅ Deployment complete!\"\necho \"Your site will be available at: https://yourusername.github.io/webllm-app\"",
+              "Location": "iCloud Drive/WebLLM_iOS_App/downloads"
+            }
+          },
+          {
+            "actionUUID": "show-ish-apps",
+            "actionName": "Show Notification",
+            "actionType": "WFShowNotificationAction",
+            "parameters": {
+              "NotificationText": "📋 Install these apps for iSH method:\n\n1. **iSH Shell** - Install via TestFlight\n2. **Working Copy** - Git client (optional)\n3. **Textastic** - Code editor (optional)\n\nThen use the deploy-ios.sh script in downloads folder.",
+              "NotificationTitle": "Required Apps for iSH"
+            }
+          }
+        ],
+        "subactionParameters": {
+          "condition": {
+            "input": "iSH Shell (Advanced)"
+          }
+        }
+      },
+      {
+        "actionUUID": "safari-method",
+        "actionName": "If",
+        "actionType": "WFIfAction",
+        "parameters": {},
+        "subactions": [
+          {
+            "actionUUID": "safari-info",
+            "actionName": "Show Notification",
+            "actionType": "WFShowNotificationAction",
+            "parameters": {
+              "NotificationText": "🌐 Safari-Only Method Selected\n\nNo additional apps required!\n\nSteps:\n1. Open Safari → github.com\n2. Sign in to GitHub\n3. Create new repository\n4. Use GitHub's web interface to create files\n5. Upload index.html and .nojekyll\n6. Enable GitHub Pages in settings\n\nRecommended file structure:\n/\n├── index.html (main app)\n├── .nojekyll (empty file)\n└── README.md (documentation)",
+              "NotificationTitle": "Safari-Only Method"
+            }
+          },
+          {
+            "actionUUID": "safari-optimization",
+            "actionName": "Show Notification",
+            "actionType": "WFShowNotificationAction",
+            "parameters": {
+              "NotificationText": "🌐 Safari Optimization Tips:\n\n✅ Enable JavaScript:\n   Settings → Safari → Advanced → JavaScript: ON\n\n✅ Request desktop site:\n   Tap AA button → Request Desktop Site\n\n✅ Use split view for multitasking\n\n✅ Enable notifications for deployment updates",
+              "NotificationTitle": "Safari Setup Tips"
+            }
+          },
+          {
+            "actionUUID": "open-safari",
+            "actionName": "Open App",
+            "actionType": "WFOpenInAppAction",
+            "parameters": {
+              "App": "com.apple.Safari"
+            }
+          }
+        ],
+        "subactionParameters": {
+          "condition": {
+            "input": "Safari Only (No Apps)"
+          }
+        }
+      },
+      {
+        "actionUUID": "common-final-steps",
+        "actionName": "Show Notification",
+        "actionType": "WFShowNotificationAction",
+        "parameters": {
+          "NotificationText": "🎉 Next Steps (All Methods):\n\n1. **Wait for deployment** (5-10 minutes)\n2. **Test your site** at: https://yourusername.github.io/webllm-app\n3. **Verify functionality**:\n   - Model loads successfully\n   - Chat interface works\n   - Responses generate properly\n4. **Share your site** with others!\n\nTroubleshooting: Check GitHub repository Settings → Pages",
+          "NotificationTitle": "Deployment Complete"
+        }
+      }
+    ],
+    "startNode": "deploy-method-chooser",
+    "entryPointType": "Start On Tap"
+  }
+}

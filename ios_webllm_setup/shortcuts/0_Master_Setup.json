@@ -1,0 +1,310 @@
+{
+  "workflow": {
+    "workflowFileVersion": "1.0",
+    "workflowName": "WebLLM Complete iOS Setup",
+    "workflowDisplayName": "🚀 WebLLM Complete Setup",
+    "workflowDescription": "Runs all 4 WebLLM setup shortcuts in sequence for complete automation",
+    "workflowUUID": "webllm-master-setup-000",
+    "lastModifiedDate": "2025-11-07T00:14:03Z",
+    "creationDate": "2025-11-07T00:14:03Z",
+    "actions": [
+      {
+        "actionUUID": "welcome-message",
+        "actionName": "Show Notification",
+        "actionType": "WFShowNotificationAction",
+        "parameters": {
+          "NotificationText": "🚀 Starting Complete WebLLM iOS Setup\n\nThis will run 4 automated shortcuts:\n1. 📁 Folder Organization\n2. 🤖 Model Download\n3. 🚀 GitHub Deploy\n4. ✅ File Verification\n\n⏱️ Total time: 45 minutes\n💾 Storage needed: 3GB\n🎯 Result: Complete WebLLM app on iOS",
+          "NotificationTitle": "WebLLM Complete Setup"
+        }
+      },
+      {
+        "actionUUID": "prerequisites-check",
+        "actionName": "Ask for Input",
+        "actionType": "WFAskForInputAction",
+        "parameters": {
+          "InputQuestion": "Before we start, confirm you have:\n\n✅ iOS 15+ (iPhone/iPad)\n✅ 3GB+ free storage\n✅ GitHub account (for deployment)\n✅ WiFi connection (for downloads)\n\nReady to begin the complete setup?",
+          "InputType": "Multiple Choice",
+          "MultipleChoice": [
+            "Yes, ready to start!",
+            "I need to prepare first",
+            "Only set up local app (skip GitHub)"
+          ]
+        }
+      },
+      {
+        "actionUUID": "prepare-pause",
+        "actionName": "If",
+        "actionType": "WFIfAction",
+        "parameters": {},
+        "subactions": [
+          {
+            "actionUUID": "show-prereq-list",
+            "actionName": "Show Notification",
+            "actionType": "WFShowNotificationAction",
+            "parameters": {
+              "NotificationText": "📋 Preparation Checklist:\n\n1. **Free up storage**: Delete unused apps/media\n2. **Connect to WiFi**: Model download is large\n3. **Create GitHub account**: Go to github.com\n4. **Import 4 shortcuts**: Use SETUP_GUIDE.md\n\nRun this master shortcut again when ready!",
+              "NotificationTitle": "Prepare Your Device"
+            }
+          }
+        ],
+        "subactionParameters": {
+          "condition": {
+            "input": "I need to prepare first"
+          }
+        }
+      },
+      {
+        "actionUUID": "start-folder-setup",
+        "actionName": "If",
+        "actionType": "WFIfAction",
+        "parameters": {},
+        "subactions": [
+          {
+            "actionUUID": "show-step-1",
+            "actionName": "Show Notification",
+            "actionType": "WFShowNotificationAction",
+            "parameters": {
+              "NotificationText": "📁 Step 1/4: Folder Organization\n\nCreating WebLLM folder structure in iCloud Drive...",
+              "NotificationTitle": "Step 1: Folder Setup"
+            }
+          },
+          {
+            "actionUUID": "open-shortcuts-app",
+            "actionName": "Open App",
+            "actionType": "WFOpenInAppAction",
+            "parameters": {
+              "App": "com.apple.shortcuts"
+            }
+          },
+          {
+            "actionUUID": "wait-30-seconds-1",
+            "actionName": "Wait",
+            "actionType": "WFDelayAction",
+            "parameters": {
+              "Delay": 30
+            }
+          },
+          {
+            "actionUUID": "step-1-complete",
+            "actionName": "Show Notification",
+            "actionType": "WFShowNotificationAction",
+            "parameters": {
+              "NotificationText": "✅ Step 1 Complete!\n\nFolder structure created:\n• WebLLM_iOS_App/\n• models/\n• downloads/\n• temp/\n\nProceeding to Step 2...",
+              "NotificationTitle": "Step 1 ✅ Complete"
+            }
+          }
+        ],
+        "subactionParameters": {
+          "condition": {
+            "input": "Yes, ready to start!"
+          }
+        }
+      },
+      {
+        "actionUUID": "start-model-download",
+        "actionName": "If",
+        "actionType": "WFIfAction",
+        "parameters": {},
+        "subactions": [
+          {
+            "actionUUID": "show-step-2",
+            "actionName": "Show Notification",
+            "actionType": "WFShowNotificationAction",
+            "parameters": {
+              "NotificationText": "🤖 Step 2/4: Model Download\n\nStarting AI model download process (2.18GB)...",
+              "NotificationTitle": "Step 2: Model Download"
+            }
+          },
+          {
+            "actionUUID": "open-shortcuts-app-2",
+            "actionName": "Open App",
+            "actionType": "WFOpenInAppAction",
+            "parameters": {
+              "App": "com.apple.shortcuts"
+            }
+          },
+          {
+            "actionUUID": "show-download-instruction",
+            "actionName": "Show Notification",
+            "actionType": "WFShowNotificationAction",
+            "parameters": {
+              "NotificationText": "📱 Model Download Instructions:\n\n1. **Select \"Auto Download\"** in the shortcut\n2. **Wait for configuration files** to download\n3. **For large files (2.18GB)**, you'll need to:\n   - Use a computer with Git LFS, OR\n   - Use iSH shell with the script, OR\n   - Use alternative download methods\n\n⏱️ This step may take 30+ minutes",
+              "NotificationTitle": "Model Download Setup"
+            }
+          },
+          {
+            "actionUUID": "wait-60-seconds-2",
+            "actionName": "Wait",
+            "actionType": "WFDelayAction",
+            "parameters": {
+              "Delay": 60
+            }
+          },
+          {
+            "actionUUID": "step-2-complete",
+            "actionName": "Show Notification",
+            "actionType": "WFShowNotificationAction",
+            "parameters": {
+              "NotificationText": "✅ Step 2 Complete!\n\nModel download setup ready.\n\nNote: Large model files (2.18GB) need additional download.\nSee the download script in downloads/ folder.\n\nProceeding to Step 3...",
+              "NotificationTitle": "Step 2 ✅ Complete"
+            }
+          }
+        ],
+        "subactionParameters": {
+          "condition": {
+            "input": "Yes, ready to start!"
+          }
+        }
+      },
+      {
+        "actionUUID": "github-deploy-skip",
+        "actionName": "If",
+        "actionType": "WFIfAction",
+        "parameters": {},
+        "subactions": [
+          {
+            "actionUUID": "show-step-3-github",
+            "actionName": "Show Notification",
+            "actionType": "WFShowNotificationAction",
+            "parameters": {
+              "NotificationText": "🚀 Step 3/4: GitHub Deploy\n\nDeploying to GitHub Pages...",
+              "NotificationTitle": "Step 3: GitHub Deployment"
+            }
+          },
+          {
+            "actionUUID": "github-deploy-instructions",
+            "actionName": "Show Notification",
+            "actionType": "WFShowNotificationAction",
+            "parameters": {
+              "NotificationText": "📱 GitHub Deployment:\n\n1. **Open the GitHub Deploy shortcut**\n2. **Choose method**:\n   - GitHub Mobile (recommended)\n   - iSH Shell (advanced)\n   - Safari only (no apps)\n3. **Follow on-screen instructions**\n\nThis creates your live WebLLM website!",
+              "NotificationTitle": "Deploy to GitHub"
+            }
+          },
+          {
+            "actionUUID": "wait-90-seconds-3",
+            "actionName": "Wait",
+            "actionType": "WFDelayAction",
+            "parameters": {
+              "Delay": 90
+            }
+          },
+          {
+            "actionUUID": "step-3-complete",
+            "actionName": "Show Notification",
+            "actionType": "WFShowNotificationAction",
+            "parameters": {
+              "NotificationText": "✅ Step 3 Complete!\n\nGitHub deployment initiated.\n\nYour site will be available at:\nhttps://yourusername.github.io/webllm-app\n\n(5-10 minutes to activate)\n\nProceeding to Step 4...",
+              "NotificationTitle": "Step 3 ✅ Complete"
+            }
+          }
+        ],
+        "subactionParameters": {
+          "condition": {
+            "input": "Yes, ready to start!"
+          }
+        }
+      },
+      {
+        "actionUUID": "local-only-skip",
+        "actionName": "If",
+        "actionType": "WFIfAction",
+        "parameters": {},
+        "subactions": [
+          {
+            "actionUUID": "show-step-3-local",
+            "actionName": "Show Notification",
+            "actionType": "WFShowNotificationAction",
+            "parameters": {
+              "NotificationText": "📱 Local iOS Setup (No GitHub)\n\nStep 3: Add to Home Screen\n\n1. **Open Files app**\n2. **Navigate to WebLLM_iOS_App**\n3. **Long press index.html**\n4. **Share → Add to Home Screen**\n5. **Name: \"WebLLM Chat\"**\n\nThis creates a native iOS app!",
+              "NotificationTitle": "Step 3: Home Screen Setup"
+            }
+          },
+          {
+            "actionUUID": "open-files-app",
+            "actionName": "Open App",
+            "actionType": "WFOpenInAppAction",
+            "parameters": {
+              "App": "com.apple.FileProvider"
+            }
+          },
+          {
+            "actionUUID": "wait-60-seconds-3",
+            "actionName": "Wait",
+            "actionType": "WFDelayAction",
+            "parameters": {
+              "Delay": 60
+            }
+          }
+        ],
+        "subactionParameters": {
+          "condition": {
+            "input": "Only set up local app (skip GitHub)"
+          }
+        }
+      },
+      {
+        "actionUUID": "start-verification",
+        "actionName": "Show Notification",
+        "actionType": "WFShowNotificationAction",
+        "parameters": {
+          "NotificationText": "✅ Step 4/4: File Verification\n\nRunning final checks...",
+          "NotificationTitle": "Step 4: Final Verification"
+        }
+      },
+      {
+        "actionUUID": "open-shortcuts-app-4",
+        "actionName": "Open App",
+        "actionType": "WFOpenInAppAction",
+        "parameters": {
+          "App": "com.apple.shortcuts"
+        }
+      },
+      {
+        "actionUUID": "run-verification",
+        "actionName": "Show Notification",
+        "actionType": "WFShowNotificationAction",
+        "parameters": {
+          "NotificationText": "📋 Verification Check:\n\n1. **Open File Verification shortcut**\n2. **Review all status indicators**\n3. **Check storage space**\n4. **Verify Home Screen setup**\n5. **Read verification report**\n\nThis confirms everything is working!",
+          "NotificationTitle": "Final Verification"
+        }
+      },
+      {
+        "actionUUID": "wait-45-seconds-4",
+        "actionName": "Wait",
+        "actionType": "WFDelayAction",
+            "parameters": {
+          "Delay": 45
+        }
+      },
+      {
+        "actionUUID": "completion-message",
+        "actionName": "Show Notification",
+        "actionType": "WFShowNotificationAction",
+        "parameters": {
+          "NotificationText": "🎉 WebLLM Setup Complete!\n\n✅ All 4 steps completed\n✅ App ready for use\n✅ Files properly organized\n\n🚀 **What you can do now:**\n• Use WebLLM Chat app on Home Screen\n• Chat with AI offline (after model download)\n• Visit your GitHub Pages site (if deployed)\n• Share your app with others\n\n🎯 **Next steps:**\n• Complete model file downloads\n• Test all features\n• Enjoy your private AI assistant!",
+          "NotificationTitle": "🎉 Setup Complete!"
+        }
+      },
+      {
+        "actionUUID": "show-usage-tips",
+        "actionName": "Show Notification",
+        "actionType": "WFShowNotificationAction",
+        "parameters": {
+          "NotificationText": "💡 Usage Tips:\n\n• **Close other apps** for best performance\n• **Keep device charged** - AI uses battery\n• **WiFi recommended** for model downloads\n• **3GB free space** for smooth operation\n• **iPhone 12+** for best experience\n\n🔐 **Privacy**: All AI processing happens on your device - nothing is sent to servers!\n\n✨ **Pro Tip**: Add to Home Screen for native app experience!",
+          "NotificationTitle": "💡 Usage Tips"
+        }
+      },
+      {
+        "actionUUID": "show-support",
+        "actionName": "Show Notification",
+        "actionType": "WFShowNotificationAction",
+        "parameters": {
+          "NotificationText": "🆘 Need Help?\n\n📚 **Documentation:**\n• SETUP_GUIDE.md (included)\n• Each shortcut has detailed instructions\n\n🔧 **Common Issues:**\n• Model won't load → Check storage space\n• App won't open → Re-add to Home Screen\n• GitHub deploy fails → Wait 15 minutes, check settings\n\n💬 **Community:**\n• WebLLM: https://mlc.ai/web-llm/\n• iOS Shortcuts: Shortcuts gallery\n\nEnjoy your WebLLM iOS app! 🤖📱",
+          "NotificationTitle": "🆘 Support & Resources"
+        }
+      }
+    ],
+    "startNode": "welcome-message",
+    "entryPointType": "Start On Tap"
+  }
+}

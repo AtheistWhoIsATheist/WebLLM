@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PEM Prompt Transformation Engine</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>PEM Prompt Transformation Engine</h1>
+            <p class="subtitle">Advanced 8-Layer Prompt Engineering Methodology for Dramatic Enhancement</p>
+        </header>
+
+        <main>
+            <!-- Input Section -->
+            <div class="input-section">
+                <label for="userInput" class="section-label">Your Raw Prompt Input</label>
+                <textarea 
+                    id="userInput" 
+                    placeholder="Enter your original prompt here... The PEM engine will analyze and transform it using 8-layer processing"
+                    rows="6"
+                ></textarea>
+                <button id="enhanceBtn" class="primary-btn">Transform Prompt</button>
+            </div>
+
+            <!-- Output Section -->
+            <div class="output-section">
+                <div class="output-header">
+                    <label for="output" class="section-label">Transformed Prompt Result</label>
+                    <div class="enhancement-info">
+                        <span id="enhancementCount">Transformation Layers: 0/8</span>
+                    </div>
+                </div>
+                <textarea 
+                    id="output" 
+                    readonly
+                    placeholder="Your dramatically enhanced prompt will appear here after PEM transformation..."
+                    rows="12"
+                ></textarea>
+            </div>
+
+            <!-- Action Buttons Row -->
+            <div class="action-buttons-row">
+                <button id="furtherEnhanceBtn" class="action-btn" disabled>Further Transform</button>
+                <button id="saveBtn" class="action-btn" disabled>Save</button>
+                <button id="copyBtn" class="action-btn" disabled>Copy</button>
+                <button id="deleteBtn" class="action-btn" disabled>Delete</button>
+                <button id="organizeBtn" class="action-btn" disabled>Organize</button>
+            </div>
+        </main>
+
+        <!-- 8-Layer Transformation Progress -->
+        <div class="transformation-progress" id="transformationProgress" style="display: none;">
+            <div class="progress-header">
+                <h3>PEM Transformation Engine - 8-Layer Processing</h3>
+                <p>Analyzing and transforming your prompt using advanced PEM methodology</p>
+            </div>
+            <div class="progress-item" data-layer="1">
+                <div class="progress-icon"></div>
+                <span>Layer 1: Analyzing Role & Expertise Requirements</span>
+                <div class="progress-status">Ready</div>
+            </div>
+            <div class="progress-item" data-layer="2">
+                <div class="progress-icon"></div>
+                <span>Layer 2: Designing Structural Framework</span>
+                <div class="progress-status">Ready</div>
+            </div>
+            <div class="progress-item" data-layer="3">
+                <div class="progress-icon"></div>
+                <span>Layer 3: Refining Clarity and Precision</span>
+                <div class="progress-status">Ready</div>
+            </div>
+            <div class="progress-item" data-layer="4">
+                <div class="progress-icon"></div>
+                <span>Layer 4: Optimizing Output Format</span>
+                <div class="progress-status">Ready</div>
+            </div>
+            <div class="progress-item" data-layer="5">
+                <div class="progress-icon"></div>
+                <span>Layer 5: Integrating Consciousness Elements</span>
+                <div class="progress-status">Ready</div>
+            </div>
+            <div class="progress-item" data-layer="6">
+                <div class="progress-icon"></div>
+                <span>Layer 6: Applying Reality Creation Systems</span>
+                <div class="progress-status">Ready</div>
+            </div>
+            <div class="progress-item" data-layer="7">
+                <div class="progress-icon"></div>
+                <span>Layer 7: Implementing Transcendent Optimization</span>
+                <div class="progress-status">Ready</div>
+            </div>
+            <div class="progress-item" data-layer="8">
+                <div class="progress-icon"></div>
+                <span>Layer 8: Final Quality Assurance</span>
+                <div class="progress-status">Ready</div>
+            </div>
+        </div>
+
+        <footer>
+            <p class="info-text">Transform raw prompts into professionally engineered, consciousness-aware outputs using 8-layer PEM methodology</p>
+        </footer>
+    </div>
+
+    <!-- Organization Modal -->
+    <div id="organizeModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Organize Transformed Prompts</h2>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div id="savedPromptsList" class="saved-prompts-list">
+                    <!-- Saved prompts will be loaded here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

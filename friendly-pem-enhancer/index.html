@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prompt Magic - Transform Your Ideas Into Professional Prompts</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            line-height: 1.5;
+        }
+
+        .main-content {
+            padding: 40px 30px;
+        }
+
+        .input-section {
+            margin-bottom: 40px;
+        }
+
+        .input-label {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #2d3748;
+            display: block;
+        }
+
+        .input-hint {
+            font-size: 1rem;
+            color: #718096;
+            margin-bottom: 20px;
+            font-style: italic;
+        }
+
+        .text-input {
+            width: 100%;
+            min-height: 150px;
+            padding: 20px;
+            border: 3px solid #e2e8f0;
+            border-radius: 15px;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            resize: vertical;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+
+        .text-input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .enhance-btn {
+            width: 100%;
+            background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+            color: white;
+            border: none;
+            padding: 20px 40px;
+            font-size: 1.4rem;
+            font-weight: 700;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .enhance-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(72, 187, 120, 0.3);
+        }
+
+        .enhance-btn:disabled {
+            background: #a0aec0;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .progress-section {
+            display: none;
+            margin: 30px 0;
+            padding: 25px;
+            background: #f7fafc;
+            border-radius: 15px;
+            border: 2px solid #e2e8f0;
+        }
+
+        .progress-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #2d3748;
+            text-align: center;
+        }
+
+        .progress-items {
+            display: grid;
+            gap: 15px;
+        }
+
+        .progress-item {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            background: white;
+            border-radius: 10px;
+            border-left: 4px solid #e2e8f0;
+            transition: all 0.3s ease;
+        }
+
+        .progress-item.processing {
+            border-left-color: #4299e1;
+            background: #ebf8ff;
+        }
+
+        .progress-item.completed {
+            border-left-color: #48bb78;
+            background: #f0fff4;
+        }
+
+        .progress-icon {
+            width: 24px;
+            height: 24px;
+            margin-right: 15px;
+            border-radius: 50%;
+            background: #e2e8f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        .progress-item.processing .progress-icon {
+            background: #4299e1;
+            color: white;
+            animation: pulse 1.5s infinite;
+        }
+
+        .progress-item.completed .progress-icon {
+            background: #48bb78;
+            color: white;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .progress-text {
+            flex: 1;
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+
+        .progress-item.processing .progress-text {
+            color: #2b6cb0;
+        }
+
+        .progress-item.completed .progress-text {
+            color: #276749;
+        }
+
+        .results-section {
+            display: none;
+            margin-top: 30px;
+        }
+
+        .results-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .results-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #2d3748;
+        }
+
+        .results-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .action-btn {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .copy-btn {
+            background: #4299e1;
+            color: white;
+        }
+
+        .copy-btn:hover {
+            background: #3182ce;
+        }
+
+        .try-again-btn {
+            background: #ed8936;
+            color: white;
+        }
+
+        .try-again-btn:hover {
+            background: #dd6b20;
+        }
+
+        .save-btn {
+            background: #9f7aea;
+            color: white;
+        }
+
+        .save-btn:hover {
+            background: #805ad5;
+        }
+
+        .result-text {
+            width: 100%;
+            min-height: 300px;
+            padding: 20px;
+            border: 2px solid #e2e8f0;
+            border-radius: 15px;
+            font-size: 1rem;
+            line-height: 1.6;
+            resize: vertical;
+            font-family: 'Courier New', monospace;
+            background: #fdfdfd;
+        }
+
+        .comparison-section {
+            margin-top: 20px;
+            padding: 20px;
+            background: #f0fff4;
+            border-radius: 15px;
+            border: 2px solid #9ae6b4;
+        }
+
+        .comparison-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #276749;
+        }
+
+        .comparison-content {
+            font-size: 0.95rem;
+            line-height: 1.5;
+            color: #2d3748;
+        }
+
+        .example-suggestions {
+            background: #fef5e7;
+            padding: 20px;
+            border-radius: 15px;
+            margin-top: 30px;
+            border: 2px solid #fbd38d;
+        }
+
+        .example-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #744210;
+        }
+
+        .examples {
+            display: grid;
+            gap: 10px;
+        }
+
+        .example-item {
+            padding: 12px 15px;
+            background: white;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid #fbd38d;
+        }
+
+        .example-item:hover {
+            background: #fffbf0;
+            transform: translateY(-1px);
+        }
+
+        .example-text {
+            font-size: 0.95rem;
+            color: #2d3748;
+        }
+
+        .saved-prompts {
+            margin-top: 40px;
+            padding: 25px;
+            background: #f8f9ff;
+            border-radius: 15px;
+            border: 2px solid #e2e8f0;
+        }
+
+        .saved-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #2d3748;
+        }
+
+        .saved-list {
+            display: grid;
+            gap: 15px;
+        }
+
+        .saved-item {
+            padding: 15px;
+            background: white;
+            border-radius: 10px;
+            border: 1px solid #e2e8f0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .saved-item:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transform: translateY(-1px);
+        }
+
+        .saved-item-title {
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #2d3748;
+        }
+
+        .saved-item-preview {
+            font-size: 0.9rem;
+            color: #718096;
+            line-height: 1.4;
+        }
+
+        .alert {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 16px 24px;
+            border-radius: 12px;
+            color: white;
+            font-weight: 600;
+            font-size: 0.95rem;
+            z-index: 1000;
+            max-width: 350px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            opacity: 0;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+        }
+
+        .alert-success {
+            background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+        }
+
+        .alert-warning {
+            background: linear-gradient(135deg, #ed8936 0%, #dd6b20 100%);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+                border-radius: 15px;
+            }
+
+            .header {
+                padding: 30px 20px;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .main-content {
+                padding: 30px 20px;
+            }
+
+            .results-header {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .results-actions {
+                justify-content: stretch;
+            }
+
+            .action-btn {
+                flex: 1;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Prompt Magic</h1>
+            <p>Transform your simple ideas into powerful, professional prompts with just one click</p>
+        </div>
+
+        <div class="main-content">
+            <div class="input-section">
+                <label class="input-label">What would you like to create?</label>
+                <p class="input-hint">Just type anything - "Write about AI", "Create a marketing plan", "Explain quantum physics" - and watch it become a professional prompt!</p>
+                
+                <textarea id="userInput" class="text-input" placeholder="Type your idea here... For example: 'Write about AI' or 'Create a business plan'"></textarea>
+                
+                <button id="enhanceBtn" class="enhance-btn" disabled>Enhance My Prompt!</button>
+            </div>
+
+            <div id="progressSection" class="progress-section">
+                <div class="progress-title">Creating your magic prompt...</div>
+                <div class="progress-items">
+                    <div class="progress-item" data-step="1">
+                        <div class="progress-icon">1</div>
+                        <div class="progress-text">Adding expert knowledge...</div>
+                    </div>
+                    <div class="progress-item" data-step="2">
+                        <div class="progress-icon">2</div>
+                        <div class="progress-text">Structuring your request...</div>
+                    </div>
+                    <div class="progress-item" data-step="3">
+                        <div class="progress-icon">3</div>
+                        <div class="progress-text">Making it more precise...</div>
+                    </div>
+                    <div class="progress-item" data-step="4">
+                        <div class="progress-icon">4</div>
+                        <div class="progress-text">Adding quality standards...</div>
+                    </div>
+                    <div class="progress-item" data-step="5">
+                        <div class="progress-icon">5</div>
+                        <div class="progress-text">Applying special touches...</div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="resultsSection" class="results-section">
+                <div class="results-header">
+                    <div class="results-title">Your Enhanced Prompt</div>
+                    <div class="results-actions">
+                        <button id="copyBtn" class="action-btn copy-btn">Copy Result</button>
+                        <button id="tryAgainBtn" class="action-btn try-again-btn">Try Again</button>
+                        <button id="saveBtn" class="action-btn save-btn">Save for Later</button>
+                    </div>
+                </div>
+                <textarea id="resultText" class="result-text" readonly></textarea>
+                
+                <div class="comparison-section">
+                    <div class="comparison-title">What changed?</div>
+                    <div class="comparison-content" id="comparisonContent"></div>
+                </div>
+            </div>
+
+            <div class="example-suggestions">
+                <div class="example-title">Need some inspiration? Try these examples:</div>
+                <div class="examples">
+                    <div class="example-item" onclick="useExample('Write about artificial intelligence')">
+                        <div class="example-text">"Write about artificial intelligence"</div>
+                    </div>
+                    <div class="example-item" onclick="useExample('Create a marketing strategy for a coffee shop')">
+                        <div class="example-text">"Create a marketing strategy for a coffee shop"</div>
+                    </div>
+                    <div class="example-item" onclick="useExample('Explain how to start a small business')">
+                        <div class="example-text">"Explain how to start a small business"</div>
+                    </div>
+                    <div class="example-item" onclick="useExample('Design a workout routine for beginners')">
+                        <div class="example-text">"Design a workout routine for beginners"</div>
+                    </div>
+                    <div class="example-item" onclick="useExample('Write a product review')">
+                        <div class="example-text">"Write a product review"</div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="savedPrompts" class="saved-prompts" style="display: none;">
+                <div class="saved-title">Your Saved Prompts</div>
+                <div class="saved-list" id="savedList"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // DOM Elements
+        const userInput = document.getElementById('userInput');
+        const enhanceBtn = document.getElementById('enhanceBtn');
+        const progressSection = document.getElementById('progressSection');
+        const resultsSection = document.getElementById('resultsSection');
+        const resultText = document.getElementById('resultText');
+        const copyBtn = document.getElementById('copyBtn');
+        const tryAgainBtn = document.getElementById('tryAgainBtn');
+        const saveBtn = document.getElementById('saveBtn');
+        const comparisonContent = document.getElementById('comparisonContent');
+        const savedPrompts = document.getElementById('savedPrompts');
+        const savedList = document.getElementById('savedList');
+
+        // Load saved data on page load
+        window.addEventListener('DOMContentLoaded', () => {
+            loadSavedData();
+            loadSavedPrompts();
+            updateButtonState();
+        });
+
+        // Update button state on input
+        userInput.addEventListener('input', updateButtonState);
+
+        // Handle enhancement
+        enhanceBtn.addEventListener('click', enhancePrompt);
+        tryAgainBtn.addEventListener('click', () => {
+            resultsSection.style.display = 'none';
+            userInput.focus();
+        });
+
+        // Copy to clipboard
+        copyBtn.addEventListener('click', copyToClipboard);
+
+        // Save prompt
+        saveBtn.addEventListener('click', savePrompt);
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            if ((e.ctrlKey || e.metaKey) && e.key === 'Enter' && !enhanceBtn.disabled) {
+                e.preventDefault();
+                enhanceBtn.click();
+            }
+        });
+
+        function updateButtonState() {
+            enhanceBtn.disabled = userInput.value.trim().length === 0;
+        }
+
+        function useExample(text) {
+            userInput.value = text;
+            updateButtonState();
+            userInput.focus();
+        }
+
+        function enhancePrompt() {
+            const userText = userInput.value.trim();
+            
+            if (!userText) {
+                showAlert('Please enter a prompt to enhance.', 'warning');
+                return;
+            }
+
+            // Show progress
+            progressSection.style.display = 'block';
+            resultsSection.style.display = 'none';
+            enhanceBtn.disabled = true;
+
+            // Show progress steps
+            showProgressStep(1, 'processing');
+            
+            setTimeout(() => {
+                showProgressStep(1, 'completed');
+                showProgressStep(2, 'processing');
+                
+                setTimeout(() => {
+                    showProgressStep(2, 'completed');
+                    showProgressStep(3, 'processing');
+                    
+                    setTimeout(() => {
+                        showProgressStep(3, 'completed');
+                        showProgressStep(4, 'processing');
+                        
+                        setTimeout(() => {
+                            showProgressStep(4, 'completed');
+                            showProgressStep(5, 'processing');
+                            
+                            setTimeout(() => {
+                                showProgressStep(5, 'completed');
+                                
+                                // Generate enhanced text
+                                const enhancedText = generateEnhancedPrompt(userText);
+                                resultText.value = enhancedText;
+                                
+                                // Show comparison
+                                showComparison(userText, enhancedText);
+                                
+                                // Hide progress and show results
+                                setTimeout(() => {
+                                    progressSection.style.display = 'none';
+                                    resultsSection.style.display = 'block';
+                                    enhanceBtn.disabled = false;
+                                    showAlert('Your prompt has been magically enhanced!', 'success');
+                                    saveCurrentData();
+                                }, 500);
+                                
+                            }, 400);
+                        }, 300);
+                    }, 300);
+                }, 300);
+            }, 300);
+        }
+
+        function showProgressStep(step, status) {
+            const item = document.querySelector(`[data-step="${step}"]`);
+            if (item) {
+                item.className = `progress-item ${status}`;
+            }
+        }
+
+        function generateEnhancedPrompt(userText) {
+            const analysis = analyzeIntent(userText);
+            const domain = assessDomain(userText);
+            
+            return `You are an expert professional specializing in ${domain} with extensive experience and deep knowledge in this field.
+
+## Your Task
+${userText}
+
+## What You Need To Do:
+1. **Start with a clear overview** - Give me the big picture and main points
+2. **Provide detailed analysis** - Use your expertise to explain the topic thoroughly
+3. **Include practical examples** - Show real-world applications and case studies
+4. **Add actionable insights** - Give me specific steps I can actually use
+5. **End with key takeaways** - Summarize the most important points
+
+## Quality Standards:
+- Use clear, professional language that's easy to understand
+- Include specific details, facts, and examples where possible
+- Make sure everything is accurate and up-to-date
+- Structure your response logically with clear sections
+- Focus on being helpful and practical
+
+## Format Your Response:
+1. **Overview** - Main points and key insights
+2. **Detailed Analysis** - In-depth explanation with examples
+3. **Practical Applications** - How this works in real life
+4. **Key Takeaways** - Most important points to remember
+5. **Next Steps** - What you should do with this information
+
+Please deliver a comprehensive, professional response that adds real value and helps me understand and apply this topic effectively.`;
+        }
+
+        function analyzeIntent(text) {
+            const intentKeywords = {
+                writing: ['write', 'create', 'draft', 'compose'],
+                explanation: ['explain', 'describe', 'clarify', 'elaborate'],
+                analysis: ['analyze', 'examine', 'review', 'assess'],
+                comparison: ['compare', 'contrast', 'versus', 'differences'],
+                strategy: ['strategy', 'plan', 'approach', 'method'],
+                design: ['design', 'create', 'build', 'develop']
+            };
+
+            const lowerText = text.toLowerCase();
+            for (const [intent, keywords] of Object.entries(intentKeywords)) {
+                if (keywords.some(keyword => lowerText.includes(keyword))) {
+                    return intent;
+                }
+            }
+            return 'general';
+        }
+
+        function assessDomain(text) {
+            const domainKeywords = {
+                technology: ['ai', 'software', 'computer', 'digital', 'tech', 'programming'],
+                business: ['business', 'marketing', 'sales', 'strategy', 'management', 'finance'],
+                health: ['health', 'fitness', 'medical', 'wellness', 'nutrition', 'exercise'],
+                education: ['education', 'learning', 'teaching', 'study', 'academic'],
+                creative: ['creative', 'art', 'design', 'writing', 'story', 'music'],
+                science: ['science', 'research', 'study', 'analysis', 'physics', 'chemistry']
+            };
+
+            const lowerText = text.toLowerCase();
+            for (const [domain, keywords] of Object.entries(domainKeywords)) {
+                if (keywords.some(keyword => lowerText.includes(keyword))) {
+                    return domain;
+                }
+            }
+            return 'general topics';
+        }
+
+        function showComparison(original, enhanced) {
+            const improvements = [
+                "Added a professional expert role to give your prompt more authority",
+                "Created a clear structure with numbered sections for better organization", 
+                "Included specific quality standards to ensure great results",
+                "Added practical formatting guidelines for professional output",
+                "Enhanced the clarity and precision of your original request"
+            ];
+
+            comparisonContent.innerHTML = `
+                <strong>Your original prompt:</strong> "${original}"<br><br>
+                <strong>Enhanced with:</strong><br>
+                ${improvements.map(imp => `• ${imp}`).join('<br>')}
+            `;
+        }
+
+        async function copyToClipboard() {
+            const textToCopy = resultText.value;
+            
+            if (!textToCopy) {
+                showAlert('Nothing to copy. Enhance a prompt first.', 'warning');
+                return;
+            }
+            
+            try {
+                await navigator.clipboard.writeText(textToCopy);
+                showAlert('Enhanced prompt copied to clipboard!', 'success');
+            } catch (err) {
+                // Fallback for older browsers
+                resultText.select();
+                document.execCommand('copy');
+                showAlert('Enhanced prompt copied to clipboard!', 'success');
+            }
+        }
+
+        function savePrompt() {
+            if (!resultText.value.trim()) {
+                showAlert('No enhanced prompt to save.', 'warning');
+                return;
+            }
+
+            const promptData = {
+                id: Date.now(),
+                originalText: userInput.value.trim(),
+                enhancedText: resultText.value.trim(),
+                timestamp: new Date().toISOString(),
+                title: userInput.value.trim().length > 50 ? 
+                       userInput.value.trim().substring(0, 50) + '...' : 
+                       userInput.value.trim()
+            };
+
+            const savedPrompts = JSON.parse(localStorage.getItem('savedPrompts') || '[]');
+            savedPrompts.unshift(promptData);
+            localStorage.setItem('savedPrompts', JSON.stringify(savedPrompts));
+            
+            loadSavedPrompts();
+            showAlert('Prompt saved successfully!', 'success');
+        }
+
+        function loadSavedPrompts() {
+            const savedPrompts = JSON.parse(localStorage.getItem('savedPrompts') || '[]');
+            
+            if (savedPrompts.length === 0) {
+                savedPrompts.style.display = 'none';
+                return;
+            }
+
+            savedPromptsElement.style.display = 'block';
+            savedList.innerHTML = savedPrompts.map(prompt => `
+                <div class="saved-item" onclick="loadSavedPrompt(${prompt.id})">
+                    <div class="saved-item-title">${prompt.title}</div>
+                    <div class="saved-item-preview">${prompt.originalText}</div>
+                </div>
+            `).join('');
+        }
+
+        function loadSavedPrompt(id) {
+            const savedPrompts = JSON.parse(localStorage.getItem('savedPrompts') || '[]');
+            const prompt = savedPrompts.find(p => p.id == id);
+            
+            if (prompt) {
+                userInput.value = prompt.originalText;
+                resultText.value = prompt.enhancedText;
+                resultsSection.style.display = 'block';
+                updateButtonState();
+                showAlert('Saved prompt loaded!', 'success');
+            }
+        }
+
+        function saveCurrentData() {
+            const data = {
+                userText: userInput.value,
+                enhancedText: resultText.value,
+                timestamp: new Date().toISOString()
+            };
+            localStorage.setItem('currentPromptData', JSON.stringify(data));
+        }
+
+        function loadSavedData() {
+            try {
+                const saved = localStorage.getItem('currentPromptData');
+                if (saved) {
+                    const data = JSON.parse(saved);
+                    userInput.value = data.userText || '';
+                    resultText.value = data.enhancedText || '';
+                    if (data.enhancedText) {
+                        resultsSection.style.display = 'block';
+                    }
+                }
+            } catch (err) {
+                console.log('No saved data found or error loading data');
+            }
+        }
+
+        function showAlert(message, type) {
+            // Remove existing alerts
+            const existingAlert = document.querySelector('.alert');
+            if (existingAlert) {
+                existingAlert.remove();
+            }
+            
+            // Create new alert
+            const alert = document.createElement('div');
+            alert.className = `alert alert-${type}`;
+            alert.textContent = message;
+            
+            // Add to document
+            document.body.appendChild(alert);
+            
+            // Animate in
+            setTimeout(() => {
+                alert.style.opacity = '1';
+                alert.style.transform = 'translateY(0)';
+            }, 10);
+            
+            // Remove after 4 seconds
+            setTimeout(() => {
+                alert.style.opacity = '0';
+                alert.style.transform = 'translateY(-10px)';
+                setTimeout(() => {
+                    if (alert.parentNode) {
+                        alert.parentNode.removeChild(alert);
+                    }
+                }, 300);
+            }, 4000);
+        }
+
+        // Fix savedPrompts reference issue
+        const savedPromptsElement = document.getElementById('savedPrompts');
+    </script>
+</body>
+</html>

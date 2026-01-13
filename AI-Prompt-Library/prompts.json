@@ -1,0 +1,146 @@
+{
+  "categories": {
+    "content_writing": {
+      "name": "Content Writing",
+      "description": "Create engaging content for blogs, social media, and newsletters",
+      "color": "#3498db"
+    },
+    "business_marketing": {
+      "name": "Business & Marketing", 
+      "description": "Professional content for business and marketing needs",
+      "color": "#e74c3c"
+    },
+    "creative_writing": {
+      "name": "Creative Writing",
+      "description": "Fiction, poetry, and creative content generation",
+      "color": "#f39c12"
+    },
+    "technical_development": {
+      "name": "Technical & Development",
+      "description": "Code, documentation, and technical content",
+      "color": "#9b59b6"
+    },
+    "research_analysis": {
+      "name": "Research & Analysis",
+      "description": "Data analysis, market research, and competitive intelligence",
+      "color": "#2ecc71"
+    }
+  },
+  "templates": {
+    "content_writing": [
+      {
+        "id": "blog_post",
+        "name": "Blog Post Creator",
+        "description": "Generate comprehensive blog posts on any topic",
+        "template": "Write a comprehensive blog post about {topic}. Include an engaging introduction, 3-5 main points with subheadings, practical examples, and a compelling conclusion. Make it informative yet engaging for general readers.",
+        "variables": ["topic"]
+      },
+      {
+        "id": "social_media",
+        "name": "Social Media Post",
+        "description": "Create viral social media content",
+        "template": "Create a compelling social media post about {topic}. Include relevant hashtags, an attention-grabbing hook, and a clear call-to-action. Keep it under 300 characters and make it shareable.",
+        "variables": ["topic"]
+      },
+      {
+        "id": "newsletter",
+        "name": "Email Newsletter",
+        "description": "Professional newsletter content",
+        "template": "Write a professional email newsletter about {topic}. Include a friendly greeting, 3-4 main sections with valuable insights, and a warm closing. Make it informative but not overwhelming.",
+        "variables": ["topic"]
+      }
+    ],
+    "business_marketing": [
+      {
+        "id": "product_description", 
+        "name": "Product Description",
+        "description": "Compelling product descriptions that convert",
+        "template": "Write a compelling product description for {product}. Focus on benefits, include technical specifications, address potential objections, and create urgency. Target audience: {target_audience}.",
+        "variables": ["product", "target_audience"]
+      },
+      {
+        "id": "marketing_strategy",
+        "name": "Marketing Strategy",
+        "description": "Develop comprehensive marketing strategies",
+        "template": "Create a comprehensive marketing strategy for {product_service}. Include target audience analysis, positioning, channel recommendations, budget allocation, and success metrics.",
+        "variables": ["product_service"]
+      },
+      {
+        "id": "sales_email",
+        "name": "Sales Email",
+        "description": "High-converting sales emails",
+        "template": "Write a persuasive sales email for {product}. Include a compelling subject line, address the prospect's pain point, present the solution, include social proof, and end with a clear call-to-action.",
+        "variables": ["product"]
+      }
+    ],
+    "creative_writing": [
+      {
+        "id": "story_generator",
+        "name": "Story Generator", 
+        "description": "Create engaging fictional narratives",
+        "template": "Write an engaging short story based on these elements: {genre}, {setting}, {main_character}, and {conflict}. Include a compelling beginning, character development, rising action, climax, and satisfying resolution.",
+        "variables": ["genre", "setting", "main_character", "conflict"]
+      },
+      {
+        "id": "character_development",
+        "name": "Character Development",
+        "description": "Develop rich, complex characters",
+        "template": "Create a detailed character profile for {character_name}. Include their background, personality traits, motivations, fears, goals, dialogue style, and how they might evolve throughout a story.",
+        "variables": ["character_name"]
+      },
+      {
+        "id": "poetry_creator",
+        "name": "Poetry Creator",
+        "description": "Various poetic forms and styles",
+        "template": "Write a {poetry_form} poem about {topic}. Use {tone_mood} tone, incorporate imagery related to {theme}, and make it resonate with the intended emotional response.",
+        "variables": ["poetry_form", "topic", "tone_mood", "theme"]
+      }
+    ],
+    "technical_development": [
+      {
+        "id": "code_reviewer",
+        "name": "Code Reviewer",
+        "description": "Improve code quality and structure", 
+        "template": "Review the following {language} code and provide specific improvement suggestions: {code}. Focus on: readability, performance, security, best practices, and potential bugs. Provide before/after examples.",
+        "variables": ["language", "code"]
+      },
+      {
+        "id": "documentation_writer",
+        "name": "Documentation Writer",
+        "description": "Clear technical documentation",
+        "template": "Write clear, comprehensive documentation for {software_feature}. Include: overview, installation instructions, usage examples, API reference, and troubleshooting guide. Use simple language for non-technical users.",
+        "variables": ["software_feature"]
+      },
+      {
+        "id": "bug_debugger",
+        "name": "Bug Debugger",
+        "description": "Identify and solve programming issues",
+        "template": "Help debug this code: {code_problem}. Identify the root cause, explain why it's happening, and provide a complete solution with explanation. Also suggest prevention strategies.",
+        "variables": ["code_problem"]
+      }
+    ],
+    "research_analysis": [
+      {
+        "id": "market_research",
+        "name": "Market Research",
+        "description": "Comprehensive market analysis and insights",
+        "template": "Conduct comprehensive market research on {industry_product}. Include: market size, growth trends, key players, consumer behavior, opportunities, threats, and strategic recommendations.",
+        "variables": ["industry_product"]
+      },
+      {
+        "id": "data_analysis",
+        "name": "Data Analysis",
+        "description": "Interpret and analyze datasets",
+        "template": "Analyze the following data: {data}. Identify key patterns, trends, and insights. Provide visualizations suggestions, statistical analysis, and actionable recommendations based on the findings.",
+        "variables": ["data"]
+      },
+      {
+        "id": "competitor_analysis",
+        "name": "Competitor Analysis",
+        "description": "Detailed competitive intelligence",
+        "template": "Perform a comprehensive competitor analysis for {competitor}. Include: strengths, weaknesses, market positioning, pricing strategy, unique value propositions, and areas where we can differentiate.",
+        "variables": ["competitor"]
+      }
+    ]
+  }
+}

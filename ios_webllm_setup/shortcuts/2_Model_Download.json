@@ -1,0 +1,191 @@
+{
+  "workflow": {
+    "workflowFileVersion": "1.0",
+    "workflowName": "WebLLM Model Download Manager",
+    "workflowDisplayName": "🤖 WebLLM Model Download",
+    "workflowDescription": "Manages downloading and verification of Phi-4-mini AI model (2.18GB) for WebLLM iOS",
+    "workflowUUID": "webllm-model-download-002",
+    "lastModifiedDate": "2025-11-07T00:14:03Z",
+    "creationDate": "2025-11-07T00:14:03Z",
+    "actions": [
+      {
+        "actionUUID": "storage-check",
+        "actionName": "Get Storage Info",
+        "actionType": "WFGetStorageInfoAction",
+        "parameters": {
+          "StorageType": "iCloud Drive"
+        }
+      },
+      {
+        "actionUUID": "storage-check-condition",
+        "actionName": "If",
+        "actionType": "WFIfAction",
+        "parameters": {},
+        "subactions": [
+          {
+            "actionUUID": "storage-warning",
+            "actionName": "Show Alert",
+            "actionType": "WFAlertAction",
+            "parameters": {
+              "AlertTitle": "⚠️ Not Enough Storage",
+              "AlertMessage": "You need at least 3GB free space for the model download. Current available: {StorageRemaining}\n\nPlease free up space and try again.",
+              "AlertCancelButton": "Cancel",
+              "AlertDefaultButton": "Free Up Space"
+            }
+          }
+        ],
+        "subactionParameters": {
+          "condition": {
+            "operator": "LessThan",
+            "value": 3221225472
+          }
+        }
+      },
+      {
+        "actionUUID": "download-info",
+        "actionName": "Show Notification",
+        "actionType": "WFShowNotificationAction",
+        "parameters": {
+          "NotificationText": "🤖 About to download Phi-4-mini AI model\n📦 Size: 2.18GB (50 files)\n⏱️ Time: 10-30 minutes\n📶 Use WiFi only\n🔋 Keep device charged",
+          "NotificationTitle": "Model Download Starting"
+        }
+      },
+      {
+        "actionUUID": "create-download-script",
+        "actionName": "Create File",
+        "actionType": "WFCreateFileAction",
+        "parameters": {
+          "FileName": "download_model.sh",
+          "FileContent": "#!/bin/bash\necho \"🚀 WebLLM Phi-4-mini Model Download\"\necho \"📁 Downloading to: $(pwd)\"\necho \"⏱️ Estimated time: 10-30 minutes\"\n\n# Create model directory\nmkdir -p \"Phi-4-mini-instruct-q4f16_1-MLC\"\ncd \"Phi-4-mini-instruct-q4f16_1-MLC\"\n\necho \"📋 Downloading configuration files...\"\ncurl -L \"https://huggingface.co/mlc-ai/Phi-4-mini-instruct-q4f16_1-MLC/resolve/main/mlc-chat-config.json\" -o mlc-chat-config.json\ncurl -L \"https://huggingface.co/mlc-ai/Phi-4-mini-instruct-q4f16_1-MLC/resolve/main/ndarray-cache.json\" -o ndarray-cache.json\ncurl -L \"https://huggingface.co/mlc-ai/Phi-4-mini-instruct-q4f16_1-MLC/resolve/main/added_tokens.json\" -o added_tokens.json\ncurl -L \"https://huggingface.co/mlc-ai/Phi-4-mini-instruct-q4f16_1-MLC/resolve/main/merges.txt\" -o merges.txt\n\necho \"🤖 Downloading model parameters (50 files)...\"\nfor i in {0..49}; do\n    echo \"📥 params_shard_${i}.bin\"\n    curl -L \"https://huggingface.co/mlc-ai/Phi-4-mini-instruct-q4f16_1-MLC/resolve/main/params_shard_${i}.bin\" -o \"params_shard_${i}.bin\"\ndone\n\necho \"✅ Model download complete!\"\necho \"📂 Files in: $(pwd)\"\necho \"💾 Total size: 2.18GB\"",
+          "Location": "iCloud Drive/WebLLM_iOS_App/downloads"
+        }
+      },
+      {
+        "actionUUID": "download-options",
+        "actionName": "Ask for Input",
+        "actionType": "WFAskForInputAction",
+        "parameters": {
+          "InputQuestion": "Choose download method:\n\n1. **Auto Download** - Download all files at once (fastest)\n2. **Manual Script** - Use the download script in downloads folder\n3. **Check Existing** - Verify if model already exists",
+          "InputType": "Multiple Choice",
+          "MultipleChoice": [
+            "Auto Download (Recommended)",
+            "Manual Script (iSH required)",
+            "Check Existing Files"
+          ]
+        }
+      },
+      {
+        "actionUUID": "auto-download",
+        "actionName": "If",
+        "actionType": "WFIfAction",
+        "parameters": {},
+        "subactions": [
+          {
+            "actionUUID": "download-configs",
+            "actionName": "Get File",
+            "actionType": "WFGetFileAction",
+            "parameters": {
+              "File": "https://huggingface.co/mlc-ai/Phi-4-mini-instruct-q4f16_1-MLC/resolve/main/mlc-chat-config.json",
+              "SaveTo": "iCloud Drive/WebLLM_iOS_App/models/Phi-4-mini-instruct-q4f16_1-MLC/"
+            }
+          },
+          {
+            "actionUUID": "download-cache",
+            "actionName": "Get File",
+            "actionType": "WFGetFileAction",
+            "parameters": {
+              "File": "https://huggingface.co/mlc-ai/Phi-4-mini-instruct-q4f16_1-MLC/resolve/main/ndarray-cache.json",
+              "SaveTo": "iCloud Drive/WebLLM_iOS_App/models/Phi-4-mini-instruct-q4f16_1-MLC/"
+            }
+          },
+          {
+            "actionUUID": "download-tokens",
+            "actionName": "Get File",
+            "actionType": "WFGetFileAction",
+            "parameters": {
+              "File": "https://huggingface.co/mlc-ai/Phi-4-mini-instruct-q4f16_1-MLC/resolve/main/added_tokens.json",
+              "SaveTo": "iCloud Drive/WebLLM_iOS_App/models/Phi-4-mini-instruct-q4f16_1-MLC/"
+            }
+          },
+          {
+            "actionUUID": "download-merges",
+            "actionName": "Get File",
+            "actionType": "WFGetFileAction",
+            "parameters": {
+              "File": "https://huggingface.co/mlc-ai/Phi-4-mini-instruct-q4f16_1-MLC/resolve/main/merges.txt",
+              "SaveTo": "iCloud Drive/WebLLM_iOS_App/models/Phi-4-mini-instruct-q4f16_1-MLC/"
+            }
+          },
+          {
+            "actionUUID": "download-instruction",
+            "actionName": "Show Notification",
+            "actionType": "WFShowNotificationAction",
+            "parameters": {
+              "NotificationText": "✅ Configuration files downloaded!\n\n📋 Now you need to download the large model files (2.18GB):\n\nOption 1: Use GitHub Desktop with LFS\nOption 2: Use iSH shell with the script\nOption 3: Download via your computer\n\nSee the guide for step-by-step instructions!",
+              "NotificationTitle": "Ready for Model Download"
+            }
+          }
+        ],
+        "subactionParameters": {
+          "condition": {
+            "input": "Auto Download (Recommended)"
+          }
+        }
+      },
+      {
+        "actionUUID": "manual-script",
+        "actionName": "If",
+        "actionType": "WFIfAction",
+        "parameters": {},
+        "subactions": [
+          {
+            "actionUUID": "show-script-info",
+            "actionName": "Show Notification",
+            "actionType": "WFShowNotificationAction",
+            "parameters": {
+              "NotificationText": "📜 Download script created!\n\nTo use it:\n1. Install iSH shell app\n2. Navigate to: /var/mobile/Library/Mobile Documents/com~apple~CloudDocs/WebLLM_iOS_App/downloads/\n3. Run: bash download_model.sh\n\nThis will download all 50 model files.",
+              "NotificationTitle": "Script Ready in Downloads"
+            }
+          }
+        ],
+        "subactionParameters": {
+          "condition": {
+            "input": "Manual Script (iSH required)"
+          }
+        }
+      },
+      {
+        "actionUUID": "check-existing",
+        "actionName": "If",
+        "actionType": "WFIfAction",
+        "parameters": {},
+        "subactions": [
+          {
+            "actionUUID": "get-file-list",
+            "actionName": "Get File",
+            "actionType": "WFGetFileAction",
+            "parameters": {
+              "File": "iCloud Drive/WebLLM_iOS_App/models/Phi-4-mini-instruct-q4f16_1-MLC/"
+            }
+          }
+        ],
+        "subactionParameters": {
+          "condition": {
+            "input": "Check Existing Files"
+          }
+        }
+      },
+      {
+        "actionUUID": "completion",
+        "actionName": "Show Notification",
+            "actionType": "WFShowNotificationAction",
+        "parameters": {
+          "NotificationText": "🎉 Model download preparation complete!\n\nNext steps:\n1. Complete the model file downloads\n2. Move files to models/ folder\n3. Add index.html to Home Screen\n4. Test your WebLLM app!",
+          "NotificationTitle": "Download Setup Complete"
+        }
+      }
+    ],
+    "startNode": "storage-check",
+    "entryPointType": "Start On Tap"
+  }
+}

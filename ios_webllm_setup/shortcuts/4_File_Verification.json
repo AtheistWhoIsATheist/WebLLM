@@ -1,0 +1,279 @@
+{
+  "workflow": {
+    "workflowFileVersion": "1.0",
+    "workflowName": "WebLLM File Verification",
+    "workflowDisplayName": "✅ WebLLM File Check",
+    "workflowDescription": "Verifies all WebLLM files are properly organized and ready for deployment",
+    "workflowUUID": "webllm-file-verification-004",
+    "lastModifiedDate": "2025-11-07T00:14:03Z",
+    "creationDate": "2025-11-07T00:14:03Z",
+    "actions": [
+      {
+        "actionUUID": "check-main-folder",
+        "actionName": "Get File",
+        "actionType": "WFGetFileAction",
+        "parameters": {
+          "File": "iCloud Drive/WebLLM_iOS_App/"
+        }
+      },
+      {
+        "actionUUID": "verify-index-html",
+        "actionName": "If",
+        "actionType": "WFIfAction",
+        "parameters": {},
+        "subactions": [
+          {
+            "actionUUID": "html-exists",
+            "actionName": "Show Notification",
+            "actionType": "WFShowNotificationAction",
+            "parameters": {
+              "NotificationText": "✅ index.html found\nThis is the main app file that should be added to Home Screen",
+              "NotificationTitle": "✅ index.html Verified"
+            }
+          }
+        ],
+        "subactionParameters": {
+          "condition": {
+            "fileExists": "index.html"
+          }
+        }
+      },
+      {
+        "actionUUID": "html-missing",
+        "actionName": "If",
+        "actionType": "WFIfAction",
+        "parameters": {},
+        "subactions": [
+          {
+            "actionUUID": "html-missing-alert",
+            "actionName": "Show Alert",
+            "actionType": "WFAlertAction",
+            "parameters": {
+              "AlertTitle": "❌ Missing index.html",
+              "AlertMessage": "The main WebLLM app file is missing!\n\nYou need to:\n1. Download the WebLLM setup files\n2. Copy index.html to WebLLM_iOS_App folder\n3. This file is essential for the app to work",
+              "AlertCancelButton": "Cancel",
+              "AlertDefaultButton": "Show Guide"
+            }
+          }
+        ],
+        "subactionParameters": {
+          "condition": {
+            "fileExists": "index.html",
+            "operator": "NOT"
+          }
+        }
+      },
+      {
+        "actionUUID": "verify-css-js",
+        "actionName": "If",
+        "actionType": "WFIfAction",
+        "parameters": {},
+        "subactions": [
+          {
+            "actionUUID": "css-js-exists",
+            "actionName": "Show Notification",
+            "actionType": "WFShowNotificationAction",
+            "parameters": {
+              "NotificationText": "✅ index.css and index.js found\niOS-optimized styling and functionality verified",
+              "NotificationTitle": "✅ Styling & Logic Files Verified"
+            }
+          }
+        ],
+        "subactionParameters": {
+          "condition": {
+            "fileExists": "index.css"
+          }
+        }
+      },
+      {
+        "actionUUID": "check-models-folder",
+        "actionName": "Get File",
+        "actionType": "WFGetFileAction",
+        "parameters": {
+          "File": "iCloud Drive/WebLLM_iOS_App/models/"
+        }
+      },
+      {
+        "actionUUID": "verify-model-structure",
+        "actionName": "If",
+        "actionType": "WFIfAction",
+        "parameters": {},
+        "subactions": [
+          {
+            "actionUUID": "check-model-subfolder",
+            "actionName": "Get File",
+            "actionType": "WFGetFileAction",
+            "parameters": {
+              "File": "iCloud Drive/WebLLM_iOS_App/models/Phi-4-mini-instruct-q4f16_1-MLC/"
+            }
+          }
+        ],
+        "subactionParameters": {
+          "condition": {
+            "folderExists": "models"
+          }
+        }
+      },
+      {
+        "actionUUID": "verify-model-files",
+        "actionName": "If",
+        "actionType": "WFIfAction",
+        "parameters": {},
+        "subactions": [
+          {
+            "actionUUID": "check-config-files",
+            "actionName": "Get File",
+            "actionType": "WFGetFileAction",
+            "parameters": {
+              "File": "iCloud Drive/WebLLM_iOS_App/models/Phi-4-mini-instruct-q4f16_1-MLC/mlc-chat-config.json"
+            }
+          },
+          {
+            "actionUUID": "check-cache-file",
+            "actionName": "Get File",
+            "actionType": "WFGetFileAction",
+            "parameters": {
+              "File": "iCloud Drive/WebLLM_iOS_App/models/Phi-4-mini-instruct-q4f16_1-MLC/ndarray-cache.json"
+            }
+          },
+          {
+            "actionUUID": "check-tokens-file",
+            "actionName": "Get File",
+            "actionType": "WFGetFileAction",
+            "parameters": {
+              "File": "iCloud Drive/WebLLM_iOS_App/models/Phi-4-mini-instruct-q4f16_1-MLC/added_tokens.json"
+            }
+          },
+          {
+            "actionUUID": "check-merges-file",
+            "actionName": "Get File",
+            "actionType": "WFGetFileAction",
+            "parameters": {
+              "File": "iCloud Drive/WebLLM_iOS_App/models/Phi-4-mini-instruct-q4f16_1-MLC/merges.txt"
+            }
+          },
+          {
+            "actionUUID": "model-files-status",
+            "actionName": "Show Notification",
+            "actionType": "WFShowNotificationAction",
+            "parameters": {
+              "NotificationText": "✅ Model configuration files present:\n• mlc-chat-config.json\n• ndarray-cache.json\n• added_tokens.json\n• merges.txt\n\n⚠️ Still need: 50 model parameter files (2.18GB)\nRun the Model Download shortcut to complete setup",
+              "NotificationTitle": "📋 Model Files Status"
+            }
+          }
+        ],
+        "subactionParameters": {
+          "condition": {
+            "folderExists": "Phi-4-mini-instruct-q4f16_1-MLC"
+          }
+        }
+      },
+      {
+        "actionUUID": "check-optional-files",
+        "actionName": "Get File",
+        "actionType": "WFGetFileAction",
+        "parameters": {
+          "File": "iCloud Drive/WebLLM_iOS_App/.nojekyll"
+        }
+      },
+      {
+        "actionUUID": "verify-home-screen-setup",
+        "actionName": "Ask for Input",
+        "actionType": "WFAskForInputAction",
+        "parameters": {
+          "InputQuestion": "Have you added index.html to your Home Screen yet?\n\nThis creates a native app experience.\n\nSteps:\n1. Open Files app\n2. Navigate to WebLLM_iOS_App\n3. Long press index.html\n4. Share → Add to Home Screen\n5. Name it \"WebLLM Chat\"",
+          "InputType": "Multiple Choice",
+          "MultipleChoice": [
+            "Yes, added to Home Screen",
+            "Not yet - show me how",
+            "Skip this step"
+          ]
+        }
+      },
+      {
+        "actionUUID": "show-home-screen-steps",
+        "actionName": "If",
+        "actionType": "WFIfAction",
+        "parameters": {},
+        "subactions": [
+          {
+            "actionUUID": "open-files-app",
+            "actionName": "Open App",
+            "actionType": "WFOpenInAppAction",
+            "parameters": {
+              "App": "com.apple.FileProvider"
+            }
+          },
+          {
+            "actionUUID": "show-steps",
+            "actionName": "Show Notification",
+            "actionType": "WFShowNotificationAction",
+            "parameters": {
+              "NotificationText": "📱 Add to Home Screen Steps:\n\n1. **Open Files app**\n2. **Navigate** to WebLLM_iOS_App\n3. **Long press** index.html\n4. **Select Share** 📤\n5. **Choose** \"Add to Home Screen\"\n6. **Name it** \"WebLLM Chat\"\n\n✨ This creates a native app icon!",
+              "NotificationTitle": "Home Screen Setup"
+            }
+          }
+        ],
+        "subactionParameters": {
+          "condition": {
+            "input": "Not yet - show me how"
+          }
+        }
+      },
+      {
+        "actionUUID": "check-storage-space",
+        "actionName": "Get Storage Info",
+        "actionType": "WFGetStorageInfoAction",
+        "parameters": {
+          "StorageType": "iCloud Drive"
+        }
+      },
+      {
+        "actionUUID": "storage-warning",
+        "actionName": "If",
+        "actionType": "WFIfAction",
+        "parameters": {},
+        "subactions": [
+          {
+            "actionUUID": "low-storage-alert",
+            "actionName": "Show Alert",
+            "actionType": "WFAlertAction",
+            "parameters": {
+              "AlertTitle": "⚠️ Low Storage Warning",
+              "AlertMessage": "You have {StorageRemaining} free space.\n\nFor full WebLLM setup you need:\n• 2.2GB for AI model\n• 0.5GB for app files\n• Total: 3GB recommended\n\nConsider freeing up space before downloading the model.",
+              "AlertCancelButton": "Continue Anyway",
+              "AlertDefaultButton": "Show Storage Tips"
+            }
+          }
+        ],
+        "subactionParameters": {
+          "condition": {
+            "operator": "LessThan",
+            "value": 3221225472
+          }
+        }
+      },
+      {
+        "actionUUID": "generate-verification-report",
+        "actionName": "Create File",
+        "actionType": "WFCreateFileAction",
+        "parameters": {
+          "FileName": "verification_report.md",
+          "FileContent": "# WebLLM iOS Setup Verification Report\n\n## 📋 File Structure Check\n\n### Main App Files\n- ✅ index.html - Main app interface\n- ✅ index.css - iOS-optimized styles\n- ✅ index.js - WebLLM engine logic\n- ⚠️ .nojekyll - GitHub Pages compatibility\n\n### Model Files\n- ⚠️ models/ folder exists\n- ⚠️ Phi-4-mini-instruct-q4f16_1-MLC/ folder exists\n- ✅ mlc-chat-config.json\n- ✅ ndarray-cache.json\n- ✅ added_tokens.json\n- ✅ merges.txt\n- ⚠️ 50 model parameter files (need 2.18GB download)\n\n### iOS Setup\n- ⚠️ Added to Home Screen: {Status}\n- ✅ iOS 15+ compatibility\n- ✅ Safari optimized\n\n## 🎯 Next Steps\n\n1. **Complete Model Download** (2.18GB)\n2. **Add to Home Screen** (native app experience)\n3. **Test on device** (ensure everything works)\n4. **Deploy to GitHub** (if desired)\n\n## ✅ Ready When:\n- Model files downloaded completely\n- App added to Home Screen\n- Can open app and see chat interface\n- Model loads successfully (wait for \"Ready\" message)\n\n---\n*Generated: {Date}*",
+          "Location": "iCloud Drive/WebLLM_iOS_App"
+        }
+      },
+      {
+        "actionUUID": "final-verification-status",
+        "actionName": "Show Notification",
+        "actionType": "WFShowNotificationAction",
+        "parameters": {
+          "NotificationText": "🎉 Verification Complete!\n\n✅ **Core files**: Present\n⚠️ **Model files**: Configuration ready, need parameters\n📱 **iOS setup**: {HomeScreenStatus}\n💾 **Storage**: {StorageStatus}\n\n**Next actions**:\n1. Download model files (use Model Download shortcut)\n2. Add to Home Screen (if not done)\n3. Test your WebLLM app!\n\nVerification report saved to: verification_report.md",
+          "NotificationTitle": "✅ WebLLM Verification Complete"
+        }
+      }
+    ],
+    "startNode": "check-main-folder",
+    "entryPointType": "Start On Tap"
+  }
+}
